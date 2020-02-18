@@ -1,0 +1,26 @@
+{
+  "name": "kelley-family-bank",
+  "version": "1.0.0",
+  "description": "A simple application to track kids allowance, work, tithing, and expenses",
+  "author": "nmkelley",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/pwa": "^3.0.0-0",
+    "bootstrap": "^4.4.1",
+    "firebase": "^7.7.0",
+    "nuxt": "^2.0.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/style-resources": "^1.0.0",
+    "@nuxtjs/vuetify": "^1.10.2",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^8.0.2",
+    "vue-cli-plugin-vuetify": "^2.0.3"
+  }
+}
