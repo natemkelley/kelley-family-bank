@@ -2,9 +2,15 @@ $blue: #0079FE;
 $deep-blue:#18298C;
 $deep-yellow: #FFD115;
 $shadow: #0000002D;
+$red: #F52A47;
+$error: #EA1C3A;
 
 
 .button.blue,.pill.blue{
     background: $deep-blue;
     color:white;
+}
+
+.button.red,.pill.red{
+    background:$error;
 }

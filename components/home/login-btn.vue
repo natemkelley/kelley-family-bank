@@ -21,10 +21,19 @@
               class="pill lowercase pointer"
               type="text"
               placeholder="username"
+              v-model="username"
+              @blur="findFamilyName"
             />
           </div>
           <div class="btn-con">
-            <a href="#" class="pill blue pointer lowercase" @click="btnClick">continue</a>
+            <a
+              href="#"
+              class="pill blue pointer lowercase"
+              :class="{ red: continueError }"
+              @click="loginWithUsername"
+              ><span v-show="!continueLoading">{{ continueMsg }}</span>
+              <LoadingBtns v-show="continueLoading" />
+            </a>
           </div>
           <h4 class="lowercase my-1">or</h4>
           <div class="btn-con">
@@ -41,16 +50,40 @@
 </template>
 
 <script>
+import LoadingBtns from "../loading-three-dots";
+
 export default {
   name: "login-btn",
+  components: { LoadingBtns },
   data() {
     return {
-      btnClicked: false
+      username:'',
+      btnClicked: false,
+      continueLoading: false,
+      continueError: false,
+      continueMsg: "continue"
     };
   },
   methods: {
     btnClick() {
       this.btnClicked = !this.btnClicked;
+    },
+    loginWithUsername() {
+      if (!this.continueLoading && this.username) {
+        this.continueLoading = !this.continueLoading;
+      }
+      //this.btnClick();
+    },
+    findFamilyName() {
+      this.continueLoading = true;
+      setTimeout(() => {
+        this.handleUsername();
+      }, 500);
+    },
+    handleUsername() {
+      this.continueLoading = false;
+      this.continueError = !this.continueError;
+      this.continueMsg = this.continueError ? "wrong username" : "continue";
     }
   }
 };
