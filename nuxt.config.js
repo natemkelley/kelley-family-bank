@@ -31,23 +31,19 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ["@/plugins/fireauth.js"],
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [
-    //'@nuxtjs/vuetify',
-    //['@nuxtjs/vuetify', { /* module options */ }]
-  ],
+  buildModules: [["@nuxtjs/dotenv", { filename: ".env.local" }]],
+  router: {},
   /*
    ** Nuxt.js modules
    */
   modules: ["@nuxtjs/pwa", "@nuxtjs/style-resources"],
   styleResources: {
-    scss: [
-        '@/assets/css/colors.scss',
-    ]
-},
+    scss: ["@/assets/css/colors.scss"]
+  },
   /*
    ** Build configuration
    */

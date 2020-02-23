@@ -42,8 +42,8 @@ export default {
     NavBar
   },
   mounted() {
-    console.log($nuxt);
-    console.log($nuxt.$route);
+    //console.log($nuxt);
+    //console.log($nuxt.$route);
   }
 };
 </script>

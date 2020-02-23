@@ -3,9 +3,9 @@
     <a
       class="button bigger rock-on"
       ref="button"
-      v-bind:class="{ clicked: btnClicked }"
+      v-bind:class="{ clicked: showLogin }"
     >
-      <div class="clickme" @click="btnClick">Get Started</div>
+      <div class="clickme" @click="openLogin">Get Started</div>
       <div class="login">
         <div class="image">
           <img class="slime" src="@/assets/images/slime.svg" />
@@ -22,7 +22,7 @@
               type="text"
               placeholder="username"
               v-model="username"
-              @blur="findFamilyName"
+              @blur="checkUsername"
             />
           </div>
           <div class="btn-con">
@@ -37,7 +37,7 @@
           </div>
           <h4 class="lowercase my-1">or</h4>
           <div class="btn-con">
-            <a @click="btnClick" href="#" class="pill initial pointer"
+            <a @click="loginWithGoogle" href="#" class="pill initial pointer"
               ><img class="icon" src="@/assets/images/google-logo.png" />sign
               with Google</a
             >
@@ -51,39 +51,42 @@
 
 <script>
 import LoadingBtns from "../loading-three-dots";
+import { checkIfUsernameIsReal } from "@/plugins/fireauth";
 
 export default {
   name: "login-btn",
   components: { LoadingBtns },
   data() {
     return {
-      username:'',
-      btnClicked: false,
+      username: "",
+      showLogin: false,
       continueLoading: false,
       continueError: false,
       continueMsg: "continue"
     };
   },
   methods: {
-    btnClick() {
-      this.btnClicked = !this.btnClicked;
+    openLogin() {
+      this.showLogin = true;
+    },
+    closeLogin() {
+      this.showLogin = false;
     },
     loginWithUsername() {
       if (!this.continueLoading && this.username) {
         this.continueLoading = !this.continueLoading;
       }
-      //this.btnClick();
     },
-    findFamilyName() {
+    loginWithGoogle() {
+      this.closeLogin();
+    },
+    async checkUsername() {
       this.continueLoading = true;
-      setTimeout(() => {
-        this.handleUsername();
-      }, 500);
-    },
-    handleUsername() {
+      let status = await checkIfUsernameIsReal(this.username);
+      console.log(status);
       this.continueLoading = false;
-      this.continueError = !this.continueError;
-      this.continueMsg = this.continueError ? "wrong username" : "continue";
+      this.continueError = !status;
+      this.continueMsg = status ?  "continue":"wrong username";
     }
   }
 };

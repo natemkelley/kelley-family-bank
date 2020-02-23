@@ -92,3 +92,4 @@ sw.*
 #custom_files
 Kelley_Bank_Inspiration
 XD
+.env.local
