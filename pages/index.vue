@@ -42,8 +42,17 @@ export default {
     NavBar
   },
   mounted() {
-    //console.log($nuxt);
-    //console.log($nuxt.$route);
+    console.log("mounted");
+    this.$fireAuth
+      .getRedirectResult()
+      .then(results => {
+        if (results.user) {
+          this.$router.push({ path: "/app" });
+        }
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
   }
 };
 </script>
@@ -52,7 +61,6 @@ export default {
 .section {
   display: flex;
 }
-
 .section1 {
   background-color: $deep-blue;
   background: url("~assets/backgrounds/blue_background_1.svg");
@@ -61,11 +69,9 @@ export default {
   min-height: 600px;
   color: white;
 }
-
 .push-top {
   margin-top: 110px;
 }
-
 .house-cont {
   margin-right: auto;
   margin-left: auto;
@@ -78,17 +84,16 @@ export default {
   top: 0;
   margin-left: -8.5em;
 }
-
 .house {
   position: absolute;
   height: 35em;
+  max-width: 460px;
   top: 0;
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
 }
-
 .section2 {
   background-color: $deep-blue;
   background: url("~assets/backgrounds/yellow_background_2.svg");
@@ -100,8 +105,7 @@ export default {
 .section2 .push-top {
   margin-top: 250px;
 }
-
-h1{
+h1 {
   font-size: 60px;
 }
 </style>

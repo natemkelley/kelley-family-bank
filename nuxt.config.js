@@ -1,5 +1,5 @@
 export default {
-  mode: "spa",
+  mode: "universal",
   /*
    ** Headers of the page
    */
@@ -26,21 +26,53 @@ export default {
   css: [
     "@/node_modules/bootstrap/dist/css/bootstrap-grid.css",
     "@/assets/css/main.css",
+    "@/assets/css/transitions.css",
     "@/assets/css/colors.scss"
   ],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["@/plugins/fireauth.js"],
+  plugins: ['@/plugins/autoAuth.js'],
   /*
    ** Nuxt.js dev-modules
    */
   buildModules: [["@nuxtjs/dotenv", { filename: ".env.local" }]],
-  router: {},
+  router: {
+    middleware: "router-auth"
+  },
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/pwa", "@nuxtjs/style-resources"],
+  modules: [
+    "@nuxtjs/pwa",
+    "@nuxtjs/style-resources",
+    [
+      "nuxt-fire",
+      {
+        config: {
+          apiKey: "AIzaSyBIBcGKUkrRHTVHkLfV_kUGqbtfYOE-oJU",
+          authDomain: "kelleyfamilyfinances.firebaseapp.com",
+          databaseURL: "https://kelleyfamilyfinances.firebaseio.com",
+          projectId: "kelleyfamilyfinances",
+          storageBucket: "kelleyfamilyfinances.appspot.com",
+          messagingSenderId: "210637772375",
+          appId: "1:210637772375:web:44d1602d396fba84723512",
+          measurementId: "G-ZM1LNTNZ79"
+        },
+        services: {
+          auth: {
+            initialize: {
+              onSuccessAction: 'handleSuccessfulAuthentication',
+              ssr: true
+            }
+          },
+          firestore: true,
+          functions:true,
+          storage:true
+        }
+      }
+    ]
+  ],
   styleResources: {
     scss: ["@/assets/css/colors.scss"]
   },

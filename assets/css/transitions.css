@@ -1,0 +1,17 @@
+.page-enter-active, .page-leave-active {
+    transition: opacity .4s, transform .4s;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    opacity: 1;
+  }
+  .page-enter, .page-leave-active {
+    opacity: 0.5;
+    transform: rotateY(100deg);
+  }
+
+  .test-enter-active, .test-leave-active {
+    transition: opacity 4.5s;
+  }
+  .test-enter, .test-leave-active {
+    opacity: 0;
+  }

@@ -1,57 +1,67 @@
 <template>
   <div>
+    <div class="closediv" v-show="showLogin" @click="closeLogin"></div>
     <a
       class="button bigger rock-on"
       ref="button"
-      v-bind:class="{ clicked: showLogin }"
+      v-bind:class="{ clicked: showLogin, userinfo: loggedIn }"
     >
-      <div class="clickme" @click="openLogin">Get Started</div>
-      <div class="login">
-        <div class="image">
+      <div class="clickme" @click="openLogin">{{ buttonText }}</div>
+
+      <client-only>
+        <div class="login" v-show="!loggedIn">
+          <div class="image" @click="closeLogin">
+            <img class="slime" src="@/assets/images/slime.svg" />
+            <img
+              class="man shadow5"
+              src="@/assets/images/finance_manstackinggold.svg"
+            />
+          </div>
+          <div class="buttons">
+            <h3 class="lowercase my-1">welcome</h3>
+            <div class="btn-con mt-2">
+              <a @click="loginGoogle" href="#" class="pill initial pointer"
+                ><img class="icon" src="@/assets/images/google-logo.png" />sign
+                with Google</a
+              >
+            </div>
+            <h4 class="lowercase my-n1">or</h4>
+            <div class="btn-con">
+              <a
+                @click="createAccount"
+                href="#"
+                class="pointer pill initial blue"
+                >create account</a
+              >
+            </div>
+          </div>
+        </div>
+      <div class="userinfo" v-show="loggedIn">
+        <div class="image" @click="closeLogin">
           <img class="slime" src="@/assets/images/slime.svg" />
           <img
             class="man shadow5"
             src="@/assets/images/finance_manstackinggold.svg"
           />
         </div>
-        <div class="buttons">
-          <h3 class="lowercase my-1">welcome in with</h3>
-          <div class="btn-con mt-6">
-            <input
-              class="pill lowercase pointer"
-              type="text"
-              placeholder="username"
-              v-model="username"
-              @blur="checkUsername"
-            />
-          </div>
-          <div class="btn-con">
-            <a
-              href="#"
-              class="pill blue pointer lowercase"
-              :class="{ red: continueError }"
-              @click="loginWithUsername"
-              ><span v-show="!continueLoading">{{ continueMsg }}</span>
-              <LoadingBtns v-show="continueLoading" />
-            </a>
-          </div>
-          <h4 class="lowercase my-1">or</h4>
-          <div class="btn-con">
-            <a @click="loginWithGoogle" href="#" class="pill initial pointer"
-              ><img class="icon" src="@/assets/images/google-logo.png" />sign
-              with Google</a
-            >
-          </div>
+        <div class="btn-con">
+          <nuxt-link to="/app" class="pill pointer lowercase"
+            ><span>Go to App</span>
+          </nuxt-link>
+        </div>
+        <div class="btn-con">
+          <a href="#" class="pill pointer lowercase red" @click="logout"
+            ><span>Log Out</span>
+          </a>
         </div>
       </div>
-      <div class="signin"></div
-    ></a>
+      </client-only>
+    </a>
   </div>
 </template>
 
 <script>
 import LoadingBtns from "../loading-three-dots";
-import { checkIfUsernameIsReal } from "@/plugins/fireauth";
 
 export default {
   name: "login-btn",
@@ -62,7 +72,9 @@ export default {
       showLogin: false,
       continueLoading: false,
       continueError: false,
-      continueMsg: "continue"
+      continueMsg: "continue",
+      usernameStatus: false,
+      password: ""
     };
   },
   methods: {
@@ -72,21 +84,49 @@ export default {
     closeLogin() {
       this.showLogin = false;
     },
-    loginWithUsername() {
-      if (!this.continueLoading && this.username) {
-        this.continueLoading = !this.continueLoading;
+    async loginWithUsername() {
+      //await this.checkUsername();
+      if (this.usernameStatus) {
       }
     },
-    loginWithGoogle() {
-      this.closeLogin();
+    async loginGoogle() {
+      let obj = this.$fireAuthObj;
+      let provider = new obj.GoogleAuthProvider()
+      await this.$fireAuth.signInWithRedirect(provider)
     },
-    async checkUsername() {
-      this.continueLoading = true;
-      let status = await checkIfUsernameIsReal(this.username);
-      console.log(status);
+    async logout() {
+      await this.logoutUser()
+      this.$store.commit("setAccount", null);
+    },
+    /*async checkUsername() {
+      return new Promise(async (resolve, reject) => {
+        this.continueLoading = true;
+        let status = await checkIfUsernameIsReal(this.username);
+        this.continueLoading = false;
+        this.continueError = !status;
+        this.usernameStatus = status;
+        this.continueMsg = status ? "continue" : "username not found";
+        resolve();
+      });
+    },*/
+    clearErrors() {
       this.continueLoading = false;
-      this.continueError = !status;
-      this.continueMsg = status ?  "continue":"wrong username";
+      this.continueError = false;
+      this.usernameStatus = false;
+      this.continueMsg = "continue";
+    },
+    createAccount() {}
+  },
+  computed: {
+    buttonText() {
+      let text = this.$store.state.account
+        ? this.$store.state.account.displayName
+        : "Get Started";
+      return text;
+    },
+    loggedIn() {
+      let status = this.$store.state.account ? true : false;
+      return status;
     }
   }
 };
@@ -110,9 +150,12 @@ export default {
 }
 
 .clicked {
-  height: 522px;
+  height: 430px;
   width: 250px;
   padding: 5px 15px;
+}
+.clicked.userinfo {
+  height: 360px;
 }
 
 .clicked .clickme {
@@ -120,6 +163,9 @@ export default {
 }
 .image {
   position: relative;
+}
+.clicked .image {
+  margin-top: -25px;
 }
 .slime {
   width: 250px;
@@ -136,5 +182,15 @@ export default {
 }
 .btn-con {
   margin: 5px 0px;
+}
+.closediv {
+  top: 0;
+  left: 0;
+  background: black;
+  opacity: 0.01;
+  height: 100vh;
+  width: 100vw;
+  z-index: 0;
+  position: absolute;
 }
 </style>
