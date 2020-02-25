@@ -87,7 +87,6 @@ export default {
 .house {
   position: absolute;
   height: 35em;
-  max-width: 460px;
   top: 0;
   left: 0;
   right: 0;
@@ -107,5 +106,10 @@ export default {
 }
 h1 {
   font-size: 60px;
+}
+@media only screen and (max-width: 600px) {
+  .house {
+    max-width: 445px;
+  }
 }
 </style>

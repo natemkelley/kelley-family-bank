@@ -1,4 +1,6 @@
-console.info(process.env)
+require('dotenv').config({ path: ".env.local" })
+
+
 export default {
   mode: "universal",
   /*
@@ -51,14 +53,14 @@ export default {
       "nuxt-fire",
       {
         config: {
-          apiKey: "AIzaSyBIBcGKUkrRHTVHkLfV_kUGqbtfYOE-oJU",
+          apiKey: process.env.apiKey,
           authDomain: "kelleyfamilyfinances.firebaseapp.com",
           databaseURL: "https://kelleyfamilyfinances.firebaseio.com",
           projectId: "kelleyfamilyfinances",
           storageBucket: "kelleyfamilyfinances.appspot.com",
-          messagingSenderId: "210637772375",
-          appId: "1:210637772375:web:44d1602d396fba84723512",
-          measurementId: "G-ZM1LNTNZ79"
+          messagingSenderId: process.env.messagingSenderId ,
+          appId: process.env.appId,
+          measurementId: process.env.measurementId
         },
         services: {
           auth: {

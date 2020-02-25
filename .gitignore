@@ -93,3 +93,5 @@ sw.*
 Kelley_Bank_Inspiration
 XD
 .env.local
+.firebas*
+*.cache

@@ -50,13 +50,13 @@ export const actions = {
     );
 
     /** Get the VERIFIED authUser from the server */
-    const ssrVerifiedAuthUserClaims = ctx.res.verifiedFireAuthUserClaims;
-    const ssrVerifiedAuthUser = ctx.res.verifiedFireAuthUser;
+    var ssrVerifiedAuthUserClaims;
+    var ssrVerifiedAuthUser;
 
     // ctx.res does not exist in nuxt "generate mode"
     if (ctx.res) {
-      ctx.res.verifiedFireAuthUser;
-      ctx.res.verifiedFireAuthUserClaims;
+      ssrVerifiedAuthUser = ctx.res.verifiedFireAuthUser;
+      ssrVerifiedAuthUserClaims= ctx.res.verifiedFireAuthUserClaims;
     }
 
     if (ssrVerifiedAuthUserClaims && ssrVerifiedAuthUser) {
