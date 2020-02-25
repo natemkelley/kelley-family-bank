@@ -1,8 +1,8 @@
 export default function({ store, redirect, route }) {
-  //only allow auth users to see app
-  (userLoggedIn(store) && isAuthRoute(route)) || route.name == "test"
-    ? ""
-    : redirect("/");
+  if(isAuthRoute(route) && !userLoggedIn(store)){
+    redirect("/")
+  }
+  
 }
 
 function userLoggedIn(store) {
@@ -11,10 +11,12 @@ function userLoggedIn(store) {
 
 function isAuthRoute(route) {
   if (route.matched.some(record => record.path == "/test")) {
-    return true;
+    return false;
   } else if (route.matched.some(record => record.path == "/app")) {
     return true;
   } else {
     return false;
   }
 }
+
+//https://levelup.gitconnected.com/using-firebase-authentication-in-a-nuxt-server-side-rendered-application-c2a624a9e999

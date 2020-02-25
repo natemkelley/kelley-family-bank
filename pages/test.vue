@@ -1,6 +1,12 @@
 <template>
   <div>
     <h1>Testing</h1>
+        <NuxtLink to="/">
+      root
+    </NuxtLink>
+            <NuxtLink to="/app">
+      app
+    </NuxtLink>
     <NuxtLink to="/test">
       test
     </NuxtLink>

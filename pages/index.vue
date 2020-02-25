@@ -41,7 +41,7 @@ export default {
   components: {
     NavBar
   },
-  mounted() {
+  beforeMount() {
     console.log("mounted");
     this.$fireAuth
       .getRedirectResult()

@@ -1,3 +1,4 @@
+console.info(process.env)
 export default {
   mode: "universal",
   /*

@@ -6,10 +6,10 @@
       ref="button"
       v-bind:class="{ clicked: showLogin, userinfo: loggedIn }"
     >
-      <div class="clickme" @click="openLogin">{{ buttonText }}</div>
+      <div class="clickme" @click="openLogin"><LoadingBtns v-if="!loginReady" color="#2D2D2D" /><span v-else>{{buttonText}}</span></div>
 
       <client-only>
-        <div class="login" v-show="!loggedIn">
+        <div class="login" v-if="!loggedIn">
           <div class="image" @click="closeLogin">
             <img class="slime" src="@/assets/images/slime.svg" />
             <img
@@ -36,25 +36,25 @@
             </div>
           </div>
         </div>
-      <div class="userinfo" v-show="loggedIn">
-        <div class="image" @click="closeLogin">
-          <img class="slime" src="@/assets/images/slime.svg" />
-          <img
-            class="man shadow5"
-            src="@/assets/images/finance_manstackinggold.svg"
-          />
+        <div class="userinfo" v-else>
+          <div class="image" @click="closeLogin">
+            <img class="slime" src="@/assets/images/slime.svg" />
+            <img
+              class="man shadow5"
+              src="@/assets/images/finance_manstackinggold.svg"
+            />
+          </div>
+          <div class="btn-con">
+            <NuxtLink to="/app" class="pill pointer lowercase"
+              ><span>Go to App</span>
+            </NuxtLink>
+          </div>
+          <div class="btn-con">
+            <a href="#" class="pill pointer lowercase red" @click="logout"
+              ><span>Log Out</span>
+            </a>
+          </div>
         </div>
-        <div class="btn-con">
-          <nuxt-link to="/app" class="pill pointer lowercase"
-            ><span>Go to App</span>
-          </nuxt-link>
-        </div>
-        <div class="btn-con">
-          <a href="#" class="pill pointer lowercase red" @click="logout"
-            ><span>Log Out</span>
-          </a>
-        </div>
-      </div>
       </client-only>
     </a>
   </div>
@@ -68,7 +68,7 @@ export default {
   components: { LoadingBtns },
   data() {
     return {
-      username: "",
+      btnMounted: false,
       showLogin: false,
       continueLoading: false,
       continueError: false,
@@ -91,12 +91,11 @@ export default {
     },
     async loginGoogle() {
       let obj = this.$fireAuthObj;
-      let provider = new obj.GoogleAuthProvider()
-      await this.$fireAuth.signInWithRedirect(provider)
+      let provider = new obj.GoogleAuthProvider();
+      await this.$fireAuth.signInWithRedirect(provider);
     },
     async logout() {
-      await this.logoutUser()
-      this.$store.commit("setAccount", null);
+      await this.$store.dispatch('logoutUser');
     },
     /*async checkUsername() {
       return new Promise(async (resolve, reject) => {
@@ -115,7 +114,9 @@ export default {
       this.usernameStatus = false;
       this.continueMsg = "continue";
     },
-    createAccount() {}
+    createAccount(){
+
+    }
   },
   computed: {
     buttonText() {
@@ -127,7 +128,14 @@ export default {
     loggedIn() {
       let status = this.$store.state.account ? true : false;
       return status;
+    },
+    loginReady(){
+      console.log('loginready',this.$store.state.userReady)
+      return this.$store.state.userReady || this.btnMounted
     }
+  },
+  mounted(){
+    this.btnMounted = true
   }
 };
 </script>
