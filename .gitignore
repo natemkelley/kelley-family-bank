@@ -95,3 +95,4 @@ XD
 .env.local
 .firebas*
 *.cache
+*.cache
