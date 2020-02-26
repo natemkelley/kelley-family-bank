@@ -4,7 +4,10 @@
   </div>
 </template>
 
-<style >
+<style scoped lang="scss">
+.home{
+  background: rgb(21,121,250)
+}
+</style>>
 
 
-</style>

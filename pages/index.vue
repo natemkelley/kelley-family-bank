@@ -62,7 +62,7 @@ export default {
   display: flex;
 }
 .section1 {
-  background-color: $deep-blue;
+  background-color: rgb(21,121,250);
   background: url("~assets/backgrounds/blue_background_1.svg");
   background-repeat: no-repeat;
   background-size: cover;

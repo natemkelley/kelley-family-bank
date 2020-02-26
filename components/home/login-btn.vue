@@ -6,7 +6,11 @@
       ref="button"
       v-bind:class="{ clicked: showLogin, userinfo: loggedIn }"
     >
-      <div class="clickme" @click="openLogin"><LoadingBtns v-if="!loginReady" color="#2D2D2D" /><span v-else>{{buttonText}}</span></div>
+      <div class="clickme" @click="openLogin">
+        <LoadingBtns v-if="!loginReady" color="#2D2D2D" /><span v-else>{{
+          buttonText
+        }}</span>
+      </div>
 
       <client-only>
         <div class="login" v-if="!loggedIn">
@@ -95,7 +99,7 @@ export default {
       await this.$fireAuth.signInWithRedirect(provider);
     },
     async logout() {
-      await this.$store.dispatch('logoutUser');
+      await this.$store.dispatch("logoutUser");
     },
     /*async checkUsername() {
       return new Promise(async (resolve, reject) => {
@@ -114,9 +118,7 @@ export default {
       this.usernameStatus = false;
       this.continueMsg = "continue";
     },
-    createAccount(){
-
-    }
+    createAccount() {}
   },
   computed: {
     buttonText() {
@@ -129,13 +131,13 @@ export default {
       let status = this.$store.state.account ? true : false;
       return status;
     },
-    loginReady(){
-      console.log('loginready',this.$store.state.userReady)
-      return this.$store.state.userReady || this.btnMounted
+    loginReady() {
+      console.log("loginready", this.$store.state.userReady);
+      return this.$store.state.userReady || this.btnMounted;
     }
   },
-  mounted(){
-    this.btnMounted = true
+  mounted() {
+    this.btnMounted = true;
   }
 };
 </script>
