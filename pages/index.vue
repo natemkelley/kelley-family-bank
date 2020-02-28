@@ -40,29 +40,13 @@ export default {
   layout: "home",
   components: {
     NavBar
-  },
-  beforeMount() {
-    console.log("mounted");
-    this.$fireAuth
-      .getRedirectResult()
-      .then(results => {
-        if (results.user) {
-          this.$router.push({ path: "/app" });
-        }
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
   }
 };
 </script>
 
 <style scoped lang="scss">
-.section {
-  display: flex;
-}
 .section1 {
-  background-color: rgb(21,121,250);
+  background-color: rgb(21, 121, 250);
   background: url("~assets/backgrounds/blue_background_1.svg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -94,7 +78,7 @@ export default {
   margin-right: auto;
 }
 .section2 {
-  background-color: $deep-blue;
+  background-color: rgb(254, 208, 54);
   background: url("~assets/backgrounds/yellow_background_2.svg");
   background-repeat: no-repeat;
   background-size: cover;

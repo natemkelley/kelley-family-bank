@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="navbar navbar-default row align-items-center justify-content-between"
-    >
+    <div class="navbar navbar-default row align-items-center justify-content-between">
       <div class="container">
         <div class="float-left">
           <Logo />
@@ -16,7 +14,7 @@
 </template>
 
 <script>
-import LoginBtn from "./login-btn";
+import LoginBtn from "./new-login-btn";
 import Logo from "./logo";
 
 export default {

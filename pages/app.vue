@@ -12,6 +12,7 @@
 
 <script>
 export default {
+    middleware: 'router-auth',
   mounted() {
     console.log("mounted app");
   },

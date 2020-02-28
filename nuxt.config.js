@@ -1,4 +1,6 @@
-require('dotenv').config({ path: ".env.local" })
+require('dotenv').config({
+  path: ".env.local"
+})
 
 
 export default {
@@ -8,21 +10,31 @@ export default {
    */
   head: {
     title: process.env.npm_package_name || "",
-    meta: [
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+    meta: [{
+        charset: "utf-8"
+      },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1"
+      },
       {
         hid: "description",
         name: "description",
         content: process.env.npm_package_description || ""
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [{
+      rel: "icon",
+      type: "image/x-icon",
+      href: "/favicon.ico"
+    }]
   },
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: "#fff" },
+  loading: {
+    color: "#fff"
+  },
   /*
    ** Global CSS
    */
@@ -35,14 +47,16 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/autoAuth.js'],
+  plugins: [{src:'@/plugins/autoAuth.js',ssr: true}],
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [["@nuxtjs/dotenv", { filename: ".env.local" }]],
-  router: {
-    middleware: "router-auth"
-  },
+  buildModules: [
+    ["@nuxtjs/dotenv", {
+      filename: ".env.local"
+    }]
+  ],
+  router: {},
   /*
    ** Nuxt.js modules
    */
@@ -58,7 +72,7 @@ export default {
           databaseURL: "https://kelleyfamilyfinances.firebaseio.com",
           projectId: "kelleyfamilyfinances",
           storageBucket: "kelleyfamilyfinances.appspot.com",
-          messagingSenderId: process.env.messagingSenderId ,
+          messagingSenderId: process.env.messagingSenderId,
           appId: process.env.appId,
           measurementId: process.env.measurementId
         },
@@ -70,8 +84,8 @@ export default {
             }
           },
           firestore: true,
-          functions:true,
-          storage:true
+          functions: true,
+          storage: true
         }
       }
     ]

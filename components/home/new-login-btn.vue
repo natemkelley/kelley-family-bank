@@ -15,46 +15,35 @@
         <div class="login" v-show="!loggedIn">
           <div class="image" @click="closeLogin">
             <img class="slime" src="@/assets/images/slime.svg" />
-            <img
-              class="man shadow5"
-              src="@/assets/images/finance_manstackinggold.svg"
-            />
+            <img class="man shadow5" src="@/assets/images/finance_manstackinggold.svg" />
           </div>
           <div class="buttons">
             <h3 class="lowercase my-1">welcome</h3>
             <div class="btn-con mt-2">
-              <a @click="loginGoogle" href="#" class="pill initial pointer"
-                ><img class="icon" src="@/assets/images/google-logo.png" />sign
-                with Google</a
-              >
+              <NuxtLink to="users/signin" href="#" class="pill initial pointer">
+                <img class="icon" src="@/assets/images/google-logo.png" />
+                Sign In
+              </NuxtLink>
             </div>
             <h4 class="lowercase my-n1">or</h4>
             <div class="btn-con">
-              <a
-                @click="createAccount"
-                href="#"
-                class="pointer pill initial blue"
-                >create account</a
-              >
+              <NuxtLink to="users/create" class="pointer pill initial blue">create account</NuxtLink>
             </div>
           </div>
         </div>
         <div class="userinfo" v-show="loggedIn">
           <div class="image" @click="closeLogin">
             <img class="slime" src="@/assets/images/slime.svg" />
-            <img
-              class="man shadow5"
-              src="@/assets/images/finance_manstackinggold.svg"
-            />
+            <img class="man shadow5" src="@/assets/images/finance_manstackinggold.svg" />
           </div>
           <div class="btn-con">
-            <NuxtLink to="/app" class="pill pointer lowercase"
-              ><span>Go to App</span>
+            <NuxtLink to="/app" class="pill pointer lowercase">
+              <span>Go to App</span>
             </NuxtLink>
           </div>
           <div class="btn-con">
-            <a href="#" class="pill pointer lowercase red" @click="logout"
-              ><span>Log Out</span>
+            <a href="#" class="pill pointer lowercase red" @click="logout">
+              <span>Log Out</span>
             </a>
           </div>
         </div>
@@ -68,16 +57,13 @@ import LoadingBtns from "../loading-three-dots";
 
 export default {
   name: "login-btn",
-  components: { LoadingBtns },
+  components: {
+    LoadingBtns
+  },
   data() {
     return {
       btnMounted: false,
-      showLogin: false,
-      continueLoading: false,
-      continueError: false,
-      continueMsg: "continue",
-      usernameStatus: false,
-      password: ""
+      showLogin: false
     };
   },
   methods: {
@@ -87,37 +73,9 @@ export default {
     closeLogin() {
       this.showLogin = false;
     },
-    async loginWithUsername() {
-      //await this.checkUsername();
-      if (this.usernameStatus) {
-      }
-    },
-    async loginGoogle() {
-      let obj = this.$fireAuthObj;
-      let provider = new obj.GoogleAuthProvider();
-      await this.$fireAuth.signInWithRedirect(provider);
-    },
     async logout() {
       await this.$store.dispatch("logoutUser");
-    },
-    /*async checkUsername() {
-      return new Promise(async (resolve, reject) => {
-        this.continueLoading = true;
-        let status = await checkIfUsernameIsReal(this.username);
-        this.continueLoading = false;
-        this.continueError = !status;
-        this.usernameStatus = status;
-        this.continueMsg = status ? "continue" : "username not found";
-        resolve();
-      });
-    },*/
-    clearErrors() {
-      this.continueLoading = false;
-      this.continueError = false;
-      this.usernameStatus = false;
-      this.continueMsg = "continue";
-    },
-    createAccount() {}
+    }
   },
   computed: {
     buttonText() {
@@ -162,6 +120,7 @@ export default {
   width: 250px;
   padding: 5px 15px;
 }
+
 .clicked.userinfo {
   height: 360px;
 }
@@ -169,28 +128,35 @@ export default {
 .clicked .clickme {
   margin-top: -50px;
 }
+
 .image {
   position: relative;
 }
+
 .clicked .image {
   margin-top: -25px;
 }
+
 .slime {
   width: 250px;
   margin-left: -1em;
 }
+
 .clicked .slime {
   margin-top: -1em;
 }
+
 .image .man {
   position: absolute;
   top: 2.5em;
   left: -1em;
   width: 15em;
 }
+
 .btn-con {
   margin: 5px 0px;
 }
+
 .closediv {
   top: 0;
   left: 0;

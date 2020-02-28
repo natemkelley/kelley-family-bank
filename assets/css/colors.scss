@@ -1,3 +1,4 @@
+$black:#000;
 $blue: #0079FE;
 $deep-blue:#18298C;
 $deep-yellow: #FFD115;
@@ -6,6 +7,10 @@ $red: #F52A47;
 $error: #EA1C3A;
 $foam-green:#43ED93;
 $maddie-green:#4DE4C4;
+
+.black{
+    color:$black
+}
 
 .button.blue,.pill.blue{
     background: $deep-blue;

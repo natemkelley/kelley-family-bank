@@ -1,3 +1,7 @@
+
+const Cookie = process.client ? require('js-cookie') : undefined;
+const cookieparser = process.server ? require('cookieparser') : undefined
+
 export const strict = false;
 
 export const state = () => ({
@@ -17,10 +21,13 @@ export const mutations = {
     state.userReady = payload;
   },
   resetStore(state) {
+    console.log('reset store')
     state.account = null;
     state.serverUser = null;
+    Cookie.remove('account')
   }
 };
+
 export const getters = {
   isLoggedIn: state => {
     try {
@@ -32,7 +39,9 @@ export const getters = {
 };
 
 export const actions = {
-  nuxtServerInit({ commit }, ctx) {
+  nuxtServerInit({commit}, ctx) {
+    var req = ctx.req;
+
     if (this.$fireAuth === null) {
       throw "nuxtServerInit Example not working - this.$fireAuth cannot be accessed.";
     }
@@ -45,9 +54,19 @@ export const actions = {
       throw "nuxtServerInit Example not working - ctx.$fireAuth cannot be accessed.";
     }
 
-    console.info(
-      "Success. Nuxt-fire Objects can be accessed in nuxtServerInit action via this.$fire___, ctx.$fire___ and ctx.app.$fire___"
-    );
+    //grab user cookie
+    var account = null
+    if (req.headers.cookie) {
+      const parsed = cookieparser.parse(req.headers.cookie)
+      try {
+        account = JSON.parse(parsed.account)
+        commit("setAccount", account, { expires: 365 });
+        commit("setServerUser", account, { expires: 365 });
+      } catch (err) {
+        console.warn('no cookie found')
+      }
+    }
+
 
     /** Get the VERIFIED authUser from the server */
     var ssrVerifiedAuthUserClaims;
@@ -56,13 +75,12 @@ export const actions = {
     // ctx.res does not exist in nuxt "generate mode"
     if (ctx.res) {
       ssrVerifiedAuthUser = ctx.res.verifiedFireAuthUser;
-      ssrVerifiedAuthUserClaims= ctx.res.verifiedFireAuthUserClaims;
+      ssrVerifiedAuthUserClaims = ctx.res.verifiedFireAuthUserClaims;
     }
 
-    if (ssrVerifiedAuthUserClaims && ssrVerifiedAuthUser) {
+    if (ssrVerifiedAuthUserClaims && ssrVerifiedAuthUser && account != null) {
       commit("setServerUser", ssrVerifiedAuthUserClaims);
       commit("setAccount", ssrVerifiedAuthUserClaims);
-      commit("setUserReady", true);
     }
   },
 
@@ -70,10 +88,13 @@ export const actions = {
     // Install servicerWorker if supported on sign-in/sign-up page.
     if (process.browser && "serviceWorker" in navigator) {
       console.log("registering service worker");
-      navigator.serviceWorker.register("/firebase-auth-sw.js", { scope: "/" });
+      navigator.serviceWorker.register("/firebase-auth-sw.js", {
+        scope: "/"
+      });
     }
     commit("setAccount", authUser);
     commit("setUserReady", true);
+    Cookie.set('account', authUser) // saving token in cookie for server rendering
   },
 
   checkVuexStore(ctx) {
@@ -89,6 +110,7 @@ export const actions = {
 
   async logoutUser({ commit, dispatch }) {
     try {
+      console.info('logout')
       await this.$fireAuth.signOut();
     } catch (e) {
       // Do nothing, not properly signed in anyway.

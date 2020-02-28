@@ -1,8 +1,8 @@
 export default function({ store, redirect, route }) {
+  console.log(userLoggedIn(store))
   if(isAuthRoute(route) && !userLoggedIn(store)){
     redirect("/")
   }
-  
 }
 
 function userLoggedIn(store) {
