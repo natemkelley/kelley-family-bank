@@ -1,93 +1,86 @@
 <template>
   <div>
     <div class="section section1">
-      <div class="hiddenb"><div class="slime-header"></div></div>
-
-      <div class="container bordered-container push-top">
-        <h3 class="black text-center">welcome in with</h3>
-        <div class="btn-con mt-2">
-          <a @click="loginGoogle" class="pill initial pointer black"
-            ><img class="icon" src="@/assets/images/google-logo.png" />sign with
-            Google</a
-          >
-        </div>
-        <div class="btn-con">
-          <a
-            v-show="logoutActive"
-            href="#"
-            class="pill pointer lowercase red"
-            @click="logout"
-          >
-            <span>Log Out</span>
-          </a>
-        </div>
+      <div class="swagger">
+              <h1 class="title text-center">{{ title }}</h1>
+        <LoadingComp class="push-top" v-show="!finishedLoading" />
+        <SignInComp
+          class="push-top"
+          v-if="!this.$store.getters.isLoggedIn && finishedLoading"
+        />
+        <ProfilesComp
+          class="push-top"
+          v-if="this.$store.getters.isLoggedIn && finishedLoading"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import SignInComp from "@/components/users/signinComp";
+import ProfilesComp from "@/components/users/profiles";
+import LoadingComp from "@/components/users/loading";
 export default {
   name: "signin",
   layout: "home",
+  components: { SignInComp, ProfilesComp, LoadingComp },
   data() {
     return {
-      loggedIn: false
+      redirectConfirmed: false
     };
-  },
-  methods: {
-    async loginGoogle() {
-      let obj = this.$fireAuthObj;
-      let provider = new obj.GoogleAuthProvider();
-      await this.$fireAuth.signInWithRedirect(provider);
-    },
-    async logout() {
-      await this.$store.dispatch("logoutUser");
-    }
   },
   beforeMount() {
     this.$fireAuth
       .getRedirectResult()
       .then(results => {
-        //console.log('redirect',results);
+        this.redirectConfirmed = true;
+        console.log("redirect", results);
       })
       .catch(function(error) {
         console.error(error);
       });
   },
   computed: {
-    logoutActive() {
-      return this.$store.getters.isLoggedIn;
+    finishedLoading() {
+      console.log(this.$store.getters.isLoggedIn, this.redirectConfirmed);
+      return this.$store.getters.isLoggedIn || this.redirectConfirmed;
+    },
+    title() {
+      let title = "loading...";
+      if (this.finishedLoading) {
+        title = "family bank";
+      }
+      if (this.$store.state.account) {
+        if (this.$store.state.account.displayName) {
+          let nameArr = this.$store.state.account.displayName.split(" ");
+          title = nameArr[nameArr.length - 1].toLowerCase() + " family";
+        }
+      }
+
+      return title;
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-.push-top {
-  margin-top: 37.5vh;
+<style scoped>
+
+.title {
+    position: absolute;
+    top: -100px;
+    width: 100%;
+    text-align: center;
 }
 
 .section1 {
   background-color: #1579fa;
-  background: url(/_nuxt/assets/backgrounds/blue_background_1.svg);
+  background: url("~assets/backgrounds/blue_background_1.svg");
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 100vh;
   color: white;
   overflow: hidden;
-  .container {
-    width: 60%;
-    min-width: 300px;
-    max-width: 350px;
-    height: 100%;
-    background: white;
-    padding: 35px;
-  }
-  h3 {
-    margin-bottom: 5px;
-    margin-top: 5px;
-  }
 }
 
 .hiddenb {
@@ -104,6 +97,13 @@ export default {
   background-size: cover;
   background-size: 100%;
   background-position: bottom;
+  display: none;
+}
+
+.swagger{
+      position: absolute;
+    top:  23.5vh;;
+    width: 100%;
 }
 @media (max-width: 700px) {
   .slime-header {
