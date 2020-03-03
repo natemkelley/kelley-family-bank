@@ -1,4 +1,4 @@
-const options = {"firebaseVersion":"7.7.0","config":{"apiKey":"AIzaSyBIBcGKUkrRHTVHkLfV_kUGqbtfYOE-oJU","authDomain":"kelleyfamilyfinances.firebaseapp.com","databaseURL":"https:\u002F\u002Fkelleyfamilyfinances.firebaseio.com","projectId":"kelleyfamilyfinances","storageBucket":"kelleyfamilyfinances.appspot.com","messagingSenderId":"210637772375","appId":"1:210637772375:web:44d1602d396fba84723512","measurementId":"G-ZM1LNTNZ79"},"onFirebaseHosting":false}
+const options = {"firebaseVersion":"7.9.1","config":{"apiKey":"AIzaSyBIBcGKUkrRHTVHkLfV_kUGqbtfYOE-oJU","authDomain":"kelleyfamilyfinances.firebaseapp.com","databaseURL":"https:\u002F\u002Fkelleyfamilyfinances.firebaseio.com","projectId":"kelleyfamilyfinances","storageBucket":"kelleyfamilyfinances.appspot.com","messagingSenderId":"210637772375","appId":"1:210637772375:web:44d1602d396fba84723512","measurementId":"G-ZM1LNTNZ79"},"onFirebaseHosting":false}
 const version = options.firebaseVersion
 const onFirebaseHosting = options.onFirebaseHosting
 

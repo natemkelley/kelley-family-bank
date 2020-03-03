@@ -9,16 +9,37 @@ admin.initializeApp();
 exports.createUserDB = functions.auth.user().onCreate(async (user) => {
   console.log('A new user signed in for the first time', user.displayName);
 
-  const fullName = user.displayName || 'Anonymous';
   const uuid = uuidv4();
+  const uid = user.uid;
+  const displayName = user.displayName
 
-  await admin.firestore().collection('messages').add({
-    name: fullName,
-    email:user.email,
-    uid:user.uid,
+  await admin.firestore().collection('users').doc(user.uid).set({
     timeCreated: admin.firestore.FieldValue.serverTimestamp(),
-    dump: JSON.stringify(user),
-    uuid:uuid
+    familyName: null,
+    familyUsername:null,
+    creator:user.displayName,
+    creatorEmail:user.email,
+    uid:user.uid,
+    familyPassword:null,
+    setupTutorial:{
+      started:false,
+      names:false,
+      familyName:false,
+      familyUsername:false,
+      familyPassword:false,
+      numberOfKids:false,
+      kidsSetup:false,
+      acc401K:false,
+      accSavings:false
+    }
+  });
+  await admin.firestore().collection(`users/${uid}/profiles`).doc(uuid).set({
+    uuid:uuid,
+    displayName:displayName,
+    nickname:null,
+    email:user.email,
+    profilePic:null,
+    type:'parent'
   });
 });
 

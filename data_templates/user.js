@@ -36,9 +36,9 @@ var firebasefunction = {
     familyName:String,
     familyUsername:String,
     creator:String,
-    email:String,
     uid:String,
     familyPassword:String,
+    creatorEmail:String,
     profiles:{
       parents:[{
         uuid:String,
@@ -49,7 +49,8 @@ var firebasefunction = {
         firstName:String,
         age:Number,
         birthMonth:Number,
-        uuid:String
+        uuid:String,
+        profilePic:String
       }]
     },
     accounts:[{

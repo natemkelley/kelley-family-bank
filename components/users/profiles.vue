@@ -1,6 +1,10 @@
 <template>
   <div class="signin container bordered-container">
-    <div class="row avatars-list">
+    <div class="loader justify-content-center" v-show="loading" >
+          <LoadingCircle />
+    </div>
+
+    <div class="row avatars-list" v-show="!loading">
       <div v-for="avatar in computedList" :key="avatar + 'avatars'" class="col">
         <div @click="selectAvatar(avatar)">
           <Avatar
@@ -46,10 +50,27 @@ export default {
   components: { Avatar, BackBtns, PinEnter, LoadingCircle },
   data() {
     return {
-      profiles: [1, 2, 3,4,5,6],
+      profiles: [ 2, 4, 6],
       selectedAvatar: null,
       checking: false,
+      loading:true
     };
+  },
+  mounted() {
+    let db = this.$fireStore
+      .collection("users")
+      .doc(this.$store.state.account.uid)
+      .collection("profiles")
+      .get()
+      .then(docs => {
+        docs.forEach(doc => {
+          console.log(doc.data());
+        });
+        this.loading = false;
+      })
+      .catch(err => {
+        console.log("Error getting document", err);
+      });
   },
   methods: {
     async logout() {
@@ -65,8 +86,8 @@ export default {
       this.checking = payload.status;
       if (payload.success) {
         console.log("success!");
-      } else{
-        this.error = true
+      } else {
+        this.error = true;
       }
     }
   },
@@ -93,7 +114,7 @@ export default {
 .container {
   width: 70%;
   min-width: 300px;
-  max-width: 575px;
+  max-width: 445px;
   height: 100%;
   background: white;
   padding: 30px;
@@ -115,15 +136,20 @@ h3 {
 }
 
 .loading-btn {
+  position: relative;
   top: -155px;
-  left: 101.5%;
-  margin-left: -80px;
+  left: 47.5%;
+  margin-left: 70px;
   height: 0;
   width: 30px;
-  position: relative;
 }
 .pins {
   margin-top: -45px;
+}
+.loader{
+      display: flex ;
+  margin: 2.5em;
+    transform: scale(1.5);
 }
 
 @media only screen and (max-width: 600px) {

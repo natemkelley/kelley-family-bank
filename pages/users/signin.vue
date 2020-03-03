@@ -2,7 +2,7 @@
   <div>
     <div class="section section1">
       <div class="swagger">
-              <h1 class="title text-center">{{ title }}</h1>
+        <h1 class="title text-center">{{ title }}</h1>
         <LoadingComp class="push-top" v-show="!finishedLoading" />
         <SignInComp
           class="push-top"
@@ -64,12 +64,11 @@ export default {
 </script>
 
 <style scoped>
-
 .title {
-    position: absolute;
-    top: -100px;
-    width: 100%;
-    text-align: center;
+  position: absolute;
+  top: -100px;
+  width: 100%;
+  text-align: center;
 }
 
 .section1 {
@@ -99,10 +98,10 @@ export default {
   display: none;
 }
 
-.swagger{
-      position: absolute;
-    top:  23.5vh;;
-    width: 100%;
+.swagger {
+  position: absolute;
+  top: 23.5vh;
+  width: 100%;
 }
 @media (max-width: 700px) {
   .slime-header {

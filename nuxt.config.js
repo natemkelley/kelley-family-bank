@@ -64,7 +64,7 @@ export default {
     "@nuxtjs/pwa",
     "@nuxtjs/style-resources",
     [
-      "nuxt-fire",
+      "@nuxtjs/firebase",
       {
         config: {
           apiKey: process.env.apiKey,
