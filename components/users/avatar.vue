@@ -8,7 +8,7 @@
 <script>
 export default {
   name: "avatar",
-  props: ["name", "src"],
+  props: ["name", "src","loading"],
   computed: {
     resolve_img_url() {
       if (this.src) {
@@ -23,6 +23,8 @@ export default {
 <style lang="scss" scoped>
 .avatar {
   text-align: center;
+      margin: 5px;
+      overflow: hidden;
   img {
     background: #ebe8db;
     background: rgb(208, 242, 255);

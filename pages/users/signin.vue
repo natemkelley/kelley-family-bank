@@ -35,7 +35,6 @@ export default {
       .getRedirectResult()
       .then(results => {
         this.redirectConfirmed = true;
-        console.log("redirect", results);
       })
       .catch(function(error) {
         console.error(error);
@@ -43,7 +42,7 @@ export default {
   },
   computed: {
     finishedLoading() {
-      console.log(this.$store.getters.isLoggedIn, this.redirectConfirmed);
+      //console.log(this.$store.getters.isLoggedIn, this.redirectConfirmed);
       return this.$store.getters.isLoggedIn || this.redirectConfirmed;
     },
     title() {

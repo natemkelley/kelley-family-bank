@@ -1,30 +1,28 @@
 <template>
   <div class="signin container bordered-container">
-    <div class="">
-      <transition-group
-        name="staggered-fade"
-        tag="div"
-        class="row"
-        v-on:before-enter="beforeEnter"
-        v-on:enter="enter"
-        v-on:leave="leave"
-      >
-        <div v-for="n in computedList" :key="n" class="col-md-4 col-sm-12">
-          <Avatar name="Nate" :src="`avatars_${n}.svg`" :data-index="n" />
+    <div class="row avatars-list">
+      <div v-for="avatar in computedList" :key="avatar + 'avatars'" class="col">
+        <div @click="selectAvatar(avatar)">
+          <Avatar
+            name="Nate"
+            :src="`avatars_${avatar}.svg`"
+            :data-index="avatar"
+          />
         </div>
-      </transition-group>
+
+        <div class="back-btn bigger" @click="goBack" v-if="selectedAvatar">
+          <BackBtns />
+        </div>
+        <div class="loading-btn" @click="goBack" v-if="checking">
+          <LoadingCircle />
+        </div>
+      </div>
     </div>
 
-    <div class="btn-con">
-      <a
-        v-show="logoutActive"
-        href="#"
-        class="pill pointer lowercase black"
-        @click="addComp"
-      >
-        <span>Add Comp</span>
-      </a>
+    <div class="pins" v-if="selectedAvatar">
+      <PinEnter @checking="checkingToggle" />
     </div>
+
     <div class="btn-con">
       <a
         v-show="logoutActive"
@@ -40,48 +38,35 @@
 
 <script>
 import Avatar from "./avatar";
-import Velocity from "velocity-animate";
+import BackBtns from "@/components/back-btn";
+import PinEnter from "./pin";
+import LoadingCircle from "../loading-circle";
 
 export default {
-  components: { Avatar },
+  components: { Avatar, BackBtns, PinEnter, LoadingCircle },
   data() {
     return {
-      number: 1,
-      inc: true
+      profiles: [1, 2, 3,4,5,6],
+      selectedAvatar: null,
+      checking: false,
     };
   },
   methods: {
     async logout() {
       await this.$store.dispatch("logoutUser");
     },
-    beforeEnter: function(el) {
-      el.style.opacity = 0;
-      el.style.height = 0;
+    selectAvatar(avatar) {
+      this.selectedAvatar = avatar;
     },
-    enter: function(el, done) {
-      var delay = el.dataset.index * 150;
-      setTimeout(function() {
-        Velocity(el, { opacity: 1, height: "100%" }, { complete: done });
-      }, delay);
+    goBack() {
+      this.selectedAvatar = false;
     },
-    leave: function(el, done) {
-      var delay = el.dataset.index * 150;
-      setTimeout(function() {
-        Velocity(el, { opacity: 0, height: 0 }, { complete: done });
-      }, delay);
-    },
-    addComp() {
-      if (this.number >= 6) {
-        this.inc = false;
-      } else {
-        this.inc = true;
-      }
-      console.log(this.number, this.inc);
-      if (this.inc) {
-        this.number++;
-      }
-      if (!this.inc) {
-        this.number--;
+    checkingToggle(payload) {
+      this.checking = payload.status;
+      if (payload.success) {
+        console.log("success!");
+      } else{
+        this.error = true
       }
     }
   },
@@ -90,13 +75,21 @@ export default {
       return this.$store.getters.isLoggedIn;
     },
     computedList() {
-      return this.number;
+      if (this.selectedAvatar) {
+        return [this.selectedAvatar];
+      }
+      return this.profiles;
     }
   }
 };
 </script>
 
 <style scoped lang="scss">
+.col {
+  transition: all 1000ms ease;
+  flex-shrink: 1;
+}
+
 .container {
   width: 70%;
   min-width: 300px;
@@ -108,5 +101,34 @@ export default {
 h3 {
   margin-bottom: 5px;
   margin-top: 5px;
+}
+.avatars-list {
+  margin-bottom: 15px;
+}
+.back-btn {
+  position: relative;
+  top: -125px;
+  left: 47.5%;
+  margin-left: -80px;
+  height: 30px;
+  width: 30px;
+}
+
+.loading-btn {
+  top: -155px;
+  left: 101.5%;
+  margin-left: -80px;
+  height: 0;
+  width: 30px;
+  position: relative;
+}
+.pins {
+  margin-top: -45px;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    width: 90%;
+  }
 }
 </style>
