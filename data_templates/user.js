@@ -23,6 +23,68 @@ var firebasefunction = {
     }]
   }
   
+  var passcodes=[{
+    parents:[uuid],
+    uuid:String,
+    passcode:Number
+  }];
+
+  var familyUserNames;
+
   var myUser ={
-      
+    timeCreated:String,
+    familyName:String,
+    familyUsername:String,
+    creator:String,
+    email:String,
+    uid:String,
+    familyPassword:String,
+    profiles:{
+      parents:[{
+        uuid:String,
+        firstName:String,
+        lastName:String,
+      }],
+      kids:[{
+        firstName:String,
+        age:Number,
+        birthMonth:Number,
+        uuid:String
+      }]
+    },
+    accounts:[{
+      type:'401k',
+      accountName:String,
+      purpose:String,
+      kids:[uuid],
+      withdrawDate:String,
+      match:{
+        status:Boolean,
+        max:Number,
+        period:'Year',
+        maxGrowth:Number,
+        APR:Percent
+      }
+    },
+    {
+      accountName:String,
+      kids:[uuid],
+      rate:Number,
+      per:'Period',
+      startingBalance:Number,
+      maxReturnPer:'Period',
+      accountLimit:Number
+    }
+  ],
+    setupTutorial:{
+      started:false,
+      names:false,
+      familyName:false,
+      familyUsername:false,
+      familyPassword:false,
+      numberOfKids:false,
+      kidsSetup:false,
+      acc401K:false,
+      accSavings:false
+    }
   }

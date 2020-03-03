@@ -23,6 +23,7 @@
     "jwt-decode": "^2.2.0",
     "nuxt": "^2.0.0",
     "nuxt-fire": "^3.5.5",
+    "uuid": "^7.0.1",
     "velocity-animate": "^1.5.2",
     "vuex-persistedstate": "^2.7.1"
   },
