@@ -44,11 +44,9 @@ export default {
       let progress = 0.05;
       for (let index = 0; index < array.length; index++) {
         if (pageName == array[index]) {
-          console.log(index);
           progress = (1 + index) / length;
         }
       }
-      console.log(progress);
       return progress * 100;
     },
     backgroundColor() {

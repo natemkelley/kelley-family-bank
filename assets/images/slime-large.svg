@@ -1,10 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="798" height="358" viewBox="0 0 798 358">
-  <defs>
-    <clipPath id="clip-Artboard_1">
-      <rect width="798" height="358"/>
-    </clipPath>
-  </defs>
-  <g id="Artboard_1" data-name="Artboard – 1" clip-path="url(#clip-Artboard_1)">
-    <path id="Path_286" data-name="Path 286" d="M4148-79.836V95.421s2.135,68.246,63.6,58.041,76.369-46.3,76.369-46.3,47.176-77.647,119.528,50.258,163.79-50.258,163.79-50.258,36.179-90.447,120.042,0,176.348,45.631,191,35.664,52.513-40.48,67.773-19.908-11.356-256.723-11.356-256.723H4148Z" transform="translate(-4148 134.212)" fill="#4de4c4"/>
-  </g>
-</svg>
+<svg height="358" viewBox="0 0 798 358" width="798" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><clipPath id="a"><path d="m0 0h798v358h-798z"/></clipPath><g clip-path="url(#a)"><path d="m4148-79.836v175.257s2.135 68.246 63.6 58.041 76.369-46.3 76.369-46.3 47.176-77.647 119.528 50.258 163.79-50.258 163.79-50.258 36.179-90.447 120.042 0 176.348 45.631 191 35.664 52.513-40.48 67.773-19.908-11.356-256.723-11.356-256.723h-790.746z" fill="#4de4c4" transform="translate(-4148 134.212)"/></g></svg>
