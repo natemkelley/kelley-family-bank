@@ -21,6 +21,7 @@ exports.createUserDB = functions.auth.user().onCreate(async (user) => {
     creatorEmail:user.email,
     uid:user.uid,
     familyPassword:null,
+    finishedSetupTutorial:false,
     setupTutorial:{
       started:false,
       names:false,

@@ -1,7 +1,7 @@
 <template>
   <div class="signin container bordered-container">
-    <div class="loader justify-content-center" v-show="loading" >
-          <LoadingCircle />
+    <div class="loader justify-content-center" v-show="loading">
+      <LoadingCircle />
     </div>
 
     <div class="row avatars-list" v-show="!loading">
@@ -17,7 +17,7 @@
         <div class="back-btn bigger" @click="goBack" v-if="selectedAvatar">
           <BackBtns />
         </div>
-        <div class="loading-btn" @click="goBack" v-if="checking">
+        <div class="loading-btn" v-show="checking">
           <LoadingCircle />
         </div>
       </div>
@@ -50,10 +50,10 @@ export default {
   components: { Avatar, BackBtns, PinEnter, LoadingCircle },
   data() {
     return {
-      profiles: [ 2, 4, 6],
+      profiles: [2, 4, 6],
       selectedAvatar: null,
       checking: false,
-      loading:true
+      loading: true
     };
   },
   mounted() {
@@ -64,7 +64,7 @@ export default {
       .get()
       .then(docs => {
         docs.forEach(doc => {
-          console.log(doc.data());
+          //console.log(doc.data());
         });
         this.loading = false;
       })
@@ -136,20 +136,20 @@ h3 {
 }
 
 .loading-btn {
-  position: relative;
-  top: -155px;
+  position: absolute;
+  top: 5px;
   left: 47.5%;
-  margin-left: 70px;
-  height: 0;
+  margin-left: 27.5px;
+  height: 0px;
   width: 30px;
 }
 .pins {
   margin-top: -45px;
 }
-.loader{
-      display: flex ;
-  margin: 2.5em;
-    transform: scale(1.5);
+.loader {
+  display: flex;
+  margin: 2.35em;
+  transform: scale(1.5);
 }
 
 @media only screen and (max-width: 600px) {

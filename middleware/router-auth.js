@@ -1,12 +1,20 @@
 export default function({ store, redirect, route }) {
   console.log(userLoggedIn(store))
   if(isAuthRoute(route) && !userLoggedIn(store)){
-    redirect("/")
+    redirect("/users/signin")
+  }
+
+  if(!completedOnboarding(store) && isAuthRoute(route) && !userLoggedIn(store)){
+    redirect("/users/setup")
   }
 }
 
+function completedOnboarding(store){
+  return store.getters.finishedTutorial
+}
+
 function userLoggedIn(store) {
-  return store.state.account != null;
+  return store.state.account != null && store.state.activeProfile != null;
 }
 
 function isAuthRoute(route) {

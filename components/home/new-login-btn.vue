@@ -80,7 +80,7 @@ export default {
   computed: {
     buttonText() {
       let text = this.$store.state.account
-        ? this.$store.state.account.displayName
+        ? this.$store.state.account.displayName || this.$store.state.account.creator
         : "Get Started";
       return text;
     },

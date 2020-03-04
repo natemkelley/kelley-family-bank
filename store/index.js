@@ -6,24 +6,23 @@ export const strict = false;
 
 export const state = () => ({
   account: null,
-  serverUser: null,
-  userReady: false
+  userReady: false,
+  activeProfile:null
 });
 
 export const mutations = {
   setAccount(state, payload) {
     state.account = payload;
   },
-  setServerUser(state, payload) {
-    state.serverUser = payload;
+  setActiveProfile(state,payload){
+    state.activeProfile = payload;
   },
   setUserReady(state, payload) {
     state.userReady = payload;
   },
   resetStore(state) {
-    console.log('reset store')
     state.account = null;
-    state.serverUser = null;
+    state.activeProfile = null;
     Cookie.remove('account')
   }
 };
@@ -32,6 +31,13 @@ export const getters = {
   isLoggedIn: state => {
     try {
       return state.account.id !== null;
+    } catch {
+      return false;
+    }
+  },
+  finishedTutorial: state => {
+    try {
+      return state.account.finishedSetupTutorial;
     } catch {
       return false;
     }
@@ -61,7 +67,6 @@ export const actions = {
       try {
         account = JSON.parse(parsed.account)
         commit("setAccount", account, { expires: 365 });
-        commit("setServerUser", account, { expires: 365 });
       } catch (err) {
         console.warn('no cookie found')
       }
@@ -78,8 +83,8 @@ export const actions = {
       ssrVerifiedAuthUserClaims = ctx.res.verifiedFireAuthUserClaims;
     }
 
+    console.info(ssrVerifiedAuthUserClaims,ssrVerifiedAuthUser,account)
     if (ssrVerifiedAuthUserClaims && ssrVerifiedAuthUser && account != null) {
-      commit("setServerUser", ssrVerifiedAuthUserClaims);
       commit("setAccount", ssrVerifiedAuthUserClaims);
     }
   },
@@ -92,9 +97,15 @@ export const actions = {
         scope: "/"
       });
     }
-    commit("setAccount", authUser);
-    commit("setUserReady", true);
-    Cookie.set('account', authUser) // saving token in cookie for server rendering
+
+    this.$fireStore
+    .collection("users")
+    .doc(authUser.uid).get().then(doc=>{
+      let data = doc.data()
+      commit("setAccount", data);
+      commit("setUserReady", true);
+      Cookie.set('account', data) // saving token in cookie for server rendering
+    })
   },
 
   checkVuexStore(ctx) {

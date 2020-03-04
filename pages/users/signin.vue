@@ -30,20 +30,44 @@ export default {
       redirectConfirmed: false
     };
   },
-  beforeMount() {
-    this.$fireAuth
-      .getRedirectResult()
-      .then(results => {
+  mounted() {
+    this.$fireAuth.getRedirectResult().then(result => {
+      console.log("mount exists", result, this.$store.getters.isLoggedIn);
+
+      if (this.$store.state.account || result.user) {
+        let uid = null;
+        if(result.user){
+          uid = result.user.uid
+        }
+        if(this.$store.state.account){
+          uid = this.$store.state.account.uid
+        }
+
+        if(!uid){
+          return
+        }
+
+        this.$fireStore
+          .collection("users")
+          .doc(uid)
+          .get()
+          .then(doc => {
+            console.log("redirect", !this.$store.getters.finishedTutorial);
+            if (doc.exists == false || !this.$store.getters.finishedTutorial) {
+              this.$router.push("/users/setup");
+            } else {
+              this.redirectConfirmed = true;
+            }
+          });
+      } else {
         this.redirectConfirmed = true;
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
+      }
+    });
   },
   computed: {
     finishedLoading() {
       //console.log(this.$store.getters.isLoggedIn, this.redirectConfirmed);
-      return this.$store.getters.isLoggedIn || this.redirectConfirmed;
+      return this.redirectConfirmed;
     },
     title() {
       let title = "loading...";
@@ -51,8 +75,8 @@ export default {
         title = "family bank";
       }
       if (this.$store.state.account) {
-        if (this.$store.state.account.displayName) {
-          let nameArr = this.$store.state.account.displayName.split(" ");
+        if (this.$store.state.account.creator) {
+          let nameArr = this.$store.state.account.creator.split(" ");
           title = nameArr[nameArr.length - 1].toLowerCase() + " family";
         }
       }
