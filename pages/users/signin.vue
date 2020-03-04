@@ -32,19 +32,19 @@ export default {
   },
   mounted() {
     this.$fireAuth.getRedirectResult().then(result => {
-      console.log("mount exists", result, this.$store.getters.isLoggedIn);
+      console.log("mount exists", this.testProp);
 
       if (this.$store.state.account || result.user) {
         let uid = null;
-        if(result.user){
-          uid = result.user.uid
+        if (result.user) {
+          uid = result.user.uid;
         }
-        if(this.$store.state.account){
-          uid = this.$store.state.account.uid
+        if (this.$store.state.account) {
+          uid = this.$store.state.account.uid;
         }
 
-        if(!uid){
-          return
+        if (!uid) {
+          return;
         }
 
         this.$fireStore

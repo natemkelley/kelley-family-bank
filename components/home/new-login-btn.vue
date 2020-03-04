@@ -12,7 +12,7 @@
       </div>
 
       <client-only>
-        <div class="login" v-show="!loggedIn">
+        <div class="login" v-show="!loggedIn && showLogin">
           <div class="image" @click="closeLogin">
             <img class="slime" src="@/assets/images/slime.svg" />
             <img class="man shadow5" src="@/assets/images/finance_manstackinggold.svg" />
@@ -31,14 +31,14 @@
             </div>
           </div>
         </div>
-        <div class="userinfo" v-show="loggedIn">
+        <div class="userinfo" v-show="loggedIn && showLogin">
           <div class="image" @click="closeLogin">
             <img class="slime" src="@/assets/images/slime.svg" />
             <img class="man shadow5" src="@/assets/images/finance_manstackinggold.svg" />
           </div>
           <div class="btn-con">
-            <NuxtLink to="/app" class="pill pointer lowercase">
-              <span>Go to App</span>
+            <NuxtLink testProp="you so fine" to="/app" class="pill pointer lowercase">
+              <span>sign in</span>
             </NuxtLink>
           </div>
           <div class="btn-con">
@@ -80,7 +80,7 @@ export default {
   computed: {
     buttonText() {
       let text = this.$store.state.account
-        ? this.$store.state.account.displayName || this.$store.state.account.creator
+        ? this.$store.state.account.creator.split(' ')[this.$store.state.account.creator.split(' ').length-1] +' family'
         : "Get Started";
       return text;
     },
@@ -89,7 +89,7 @@ export default {
       return status;
     },
     loginReady() {
-      return this.$store.state.account || this.btnMounted;
+      return this.$store.getters.isLoggedIn || this.btnMounted;
     }
   },
   mounted() {
@@ -103,6 +103,10 @@ export default {
   height: 50px;
   width: 175px;
   display: block;
+
+      min-width: 175px;
+    width: 100%;
+    display: block;
 }
 
 .clickme {

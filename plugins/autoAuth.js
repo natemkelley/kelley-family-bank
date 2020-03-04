@@ -3,9 +3,23 @@ import createPersistedState from 'vuex-persistedstate'
 export default ({
   store
 }) => {
+  createPersistedState({
+    paths: ['account'],
+    fetchBeforeUse: true
+  })(store);
+
+  createPersistedState({
+    storage: window.sessionStorage,
+    paths: ['activeProfile']
+  })(store);
+}
+
+
+/*
   window.onNuxtReady(() => {
     createPersistedState({
-      paths: ['account']
+      paths: ['account'],
+      fetchBeforeUse:true
     })(store);
 
     createPersistedState({
@@ -14,7 +28,7 @@ export default ({
     })(store);
 
   })
-}
+*/
 
 
 

@@ -23,7 +23,7 @@ exports.createUserDB = functions.auth.user().onCreate(async (user) => {
     familyPassword:null,
     finishedSetupTutorial:false,
     setupTutorial:{
-      started:false,
+      intro:false,
       names:false,
       familyName:false,
       familyUsername:false,
