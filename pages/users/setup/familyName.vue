@@ -11,6 +11,7 @@
 
 <script>
 export default {
+    transition: "slide3d",
   data() {
     return {
       familyName: null
