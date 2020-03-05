@@ -86,7 +86,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .title {
   position: absolute;

@@ -37,7 +37,8 @@ export const getters = {
   },
   finishedTutorial: state => {
     try {
-      return state.account.finishedSetupTutorial;
+      return false;
+      return state.account.setupTutorial.complete;
     } catch {
       return false;
     }

@@ -68,10 +68,10 @@ export default {
 .setup {
   /*background: url("~assets/backgrounds/transparent_background2.svg");*/
   min-height: 100vh;
-  transition: all 1s;
+  transition: all 0.75s;
 }
 .progressBar {
-  transition: all 1s ease-in;
+  transition: all 0.75s ease-in;
   height: 15px;
   background: #ffd115;
   box-shadow: 1px 3px #0000001f;

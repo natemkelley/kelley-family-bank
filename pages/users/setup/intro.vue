@@ -5,9 +5,7 @@
     <RichMan class="richMan d-flex align-items-center" />
     <div class="bordered-container speech-bubble-ds">
       <h1>WELCOME</h1>
-      <p>This is a quick test to make sure that it is styled correctly</p>
-      <p>This is a quick test to make sure that it is styled correctly</p>
-      <p>This is a quick test to make sure that it is styled correctly</p>
+      <p class="introText"></p>
 
       <div class="speech-bubble-ds-arrow"></div>
     </div>
@@ -16,17 +14,32 @@
 
 <script>
 import RichMan from "@/components/users/richMan";
+import Typed from 'typed.js';
 
 export default {
   name: "intro",
   components: { RichMan },
   transition: "slide3d",
   mounted() {
+
+
+var options = {
+  strings: ["Hello and welcome! I am here to guide you through the creation of your child's virtual bank accounts.","We will discuss their savings plans, 401Ks, incentives, and other account information! Let's get started!"],
+  typeSpeed: 46
+};
+
+var typed = new Typed('.introText', options);
+
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.typed-cursor{
+  display: none!important;
+  opacity: 0!important;
+}
+
 .richMan {
   width: 25vw;
   min-width: 320px;
