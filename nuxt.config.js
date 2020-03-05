@@ -9,7 +9,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || "",
+    title: "Family Banking" || "",
     meta: [{
         charset: "utf-8"
       },
@@ -33,7 +33,7 @@ export default {
    ** Customize the progress-bar color
    */
   loading: {
-    color: "#fff"
+    color: "#157dfa"
   },
   /*
    ** Global CSS

@@ -14,32 +14,26 @@
 
 <script>
 import RichMan from "@/components/users/richMan";
-import Typed from 'typed.js';
+import Typed from "typed.js";
 
 export default {
   name: "intro",
   components: { RichMan },
   transition: "slide3d",
   mounted() {
-
-
-var options = {
-  strings: ["Hello and welcome! I am here to guide you through the creation of your child's virtual bank accounts.","We will discuss their savings plans, 401Ks, incentives, and other account information! Let's get started!"],
-  typeSpeed: 46
-};
-
-var typed = new Typed('.introText', options);
-
+    var options = {
+      strings: [
+        "Hello and welcome! I am here to guide you through the creation of your child's virtual bank accounts.",
+        "We will discuss their savings plans, 401Ks, incentives, and other account information! Let's get started!"
+      ],
+      typeSpeed: 41
+    };
+    new Typed(".introText", options);
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.typed-cursor{
-  display: none!important;
-  opacity: 0!important;
-}
-
 .richMan {
   width: 25vw;
   min-width: 320px;

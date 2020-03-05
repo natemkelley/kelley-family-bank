@@ -197,3 +197,8 @@ p {
 .clickable{
   cursor: url('../cursors/cursor-pointer.png'), auto;
 }
+
+.typed-cursor {
+  display: none !important;
+  opacity: 0 !important;
+}

@@ -57,7 +57,7 @@ export default {
     };
   },
   mounted() {
-    let db = this.$fireStore
+    this.$fireStore
       .collection("users")
       .doc(this.$store.state.account.uid)
       .collection("profiles")

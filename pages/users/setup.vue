@@ -1,7 +1,7 @@
 <template>
-  <div class="setup d-flex align-items-center justify-content-center">
+  <div class="setup-cont d-flex align-items-center justify-content-center">
     <div class="container push-top">
-      <NuxtChild :test="'RESOLVE_PLZ'" />
+      <NuxtChild v-on:incomingData="incomingData" />
       <div class="progress-btns">
         <NuxtLink
           v-if="previousBtn"
@@ -46,19 +46,24 @@ export default {
         "accSavings",
         "complete",
         ""
-      ]
+      ],
+      setupData: null
     };
   },
-  methods: {},
+  methods: {
+    incomingData(data, component) {
+      console.log(data, component);
+    }
+  },
   created() {
     let array = this.setupOrder;
     let setupTutorial = this.$store.state.account.setupTutorial;
     for (let index = 0; index < array.length; index++) {
       const element = array[index];
       if (!setupTutorial[element]) {
-        this.$router.push({
+        /*this.$router.push({
           path: "/users/setup/" + element
-        });
+        });*/
         return;
       }
     }
@@ -109,7 +114,7 @@ export default {
           [k]: true
         })
         .then(result => {
-          console.log(pageName, true);
+          console.log(pageName,'saved to', true);
         });
     }
   }
@@ -117,12 +122,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.setup-cont {
+  height: 100vw;
+  min-height: 100vh;
+  padding: 60px;
+  .container {
+    max-width: 100vw;
+    padding: 0px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .setup-cont {
+    padding: 30px;
+  }
+}
+
 .push-top {
   margin-top: -20vh;
 }
 .progress-btns {
   padding: 0px 60px;
-  margin-top: 25px;
+  margin-top: 35px;
   .continue-btn {
     float: right;
   }
