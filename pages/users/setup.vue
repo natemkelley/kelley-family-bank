@@ -14,11 +14,7 @@
           />
           <p class="rock-on">previous</p>
         </NuxtLink>
-        <NuxtLink
-          :to="continueBtn"
-          v-on:click.native="updateProgress()"
-          class="continue-btn rock-on bigger-sm"
-        >
+        <NuxtLink :to="continueBtn" class="continue-btn rock-on bigger-sm">
           <p class="rock-on">
             continue<img
               class=" rock-on right shadow3"
@@ -53,9 +49,7 @@ export default {
       ]
     };
   },
-  methods: {
-
-  },
+  methods: {},
   created() {
     let array = this.setupOrder;
     let setupTutorial = this.$store.state.account.setupTutorial;
@@ -103,10 +97,11 @@ export default {
       let routeArr = from.path.split("/");
       let pageName = routeArr[routeArr.length - 1];
       let uid = this.$store.state.account.uid;
-      const k = `setupTutorial.${pageName}`;
+      let k = `setupTutorial.${pageName}`;
 
-
-      
+      if (!to || pageName == "setup") {
+        k = "setupTutorial.started";
+      }
       this.$fireStore
         .collection("users")
         .doc(uid)
