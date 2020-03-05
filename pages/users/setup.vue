@@ -1,5 +1,5 @@
 <template>
-  <div class="setup-cont d-flex align-items-center justify-content-center">
+  <div class="container setup-cont d-flex align-items-center justify-content-center">
     <div class="container push-top">
       <NuxtChild v-on:incomingData="incomingData" />
       <div class="progress-btns">
@@ -122,8 +122,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container{
+  max-width: 850px;
+}
 .setup-cont {
-  height: 100vw;
+  max-width: 850px;
+  height: 100vh;
   min-height: 100vh;
   padding: 60px;
   .container {
@@ -132,15 +136,19 @@ export default {
   }
 }
 
+.push-top {
+  margin-top: -7.5vh;
+}
+
 @media only screen and (max-width: 600px) {
   .setup-cont {
     padding: 30px;
   }
+  .push-top{
+        margin-top: 0;
+  }
 }
 
-.push-top {
-  margin-top: -20vh;
-}
 .progress-btns {
   padding: 0px 60px;
   margin-top: 35px;

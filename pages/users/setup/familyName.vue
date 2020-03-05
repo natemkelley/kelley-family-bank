@@ -50,6 +50,10 @@ export default {
     margin-right: 15px;
     font-weight: bold;
   }
+    label:last-child {
+    font-size: 24px;
+    margin-right: 0px;
+  }
   input {
     border: none;
     border-bottom: 2px solid #707070;
@@ -58,6 +62,7 @@ export default {
     width: 30vw;
     min-width: 150px;
     font-weight: bold;
+        padding-bottom: 10px;
   }
   .input-cont {
     padding: 15px;

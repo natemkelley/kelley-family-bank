@@ -26,7 +26,7 @@ export default {
         "Hello and welcome! I am here to guide you through the creation of your child's virtual bank accounts.",
         "We will discuss their savings plans, 401Ks, incentives, and other account information! Let's get started!"
       ],
-      typeSpeed: 41
+      typeSpeed: 37
     };
     new Typed(".introText", options);
   }
