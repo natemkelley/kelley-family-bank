@@ -2,17 +2,22 @@
   <div class="setup d-flex align-items-center justify-content-center">
     <div class="container push-top">
       <NuxtChild :test="'RESOLVE_PLZ'" />
-      <div class="progress-btns d-flex justify-content-between">
-        <div><span
-              ><img class="left shadow3" src="@/assets/images/previous.svg"
-            /></span><p>previous</p></div>
-        <div>
-          <p>
-            continue<span
-              ><img class="right shadow3" src="@/assets/images/continue.svg"
-            /></span>
+      <div class="progress-btns">
+        <NuxtLink v-if="previousBtn" :to="previousBtn" class="previous-btn bigger-sm">
+          <img
+            class="rock-on left shadow3"
+            src="@/assets/images/previous.svg"
+          />
+          <p class="rock-on">previous</p>
+        </NuxtLink>
+        <NuxtLink :to="continueBtn" class="continue-btn rock-on bigger-sm">
+          <p class="rock-on">
+            continue<img
+              class=" rock-on right shadow3"
+              src="@/assets/images/continue.svg"
+            />
           </p>
-        </div>
+        </NuxtLink>
       </div>
     </div>
   </div>
@@ -34,7 +39,9 @@ export default {
         "numberOfKids",
         "kidsSetup",
         "acc401K",
-        "accSavings"
+        "accSavings",
+        "complete",
+        ""
       ]
     };
   },
@@ -51,7 +58,36 @@ export default {
       }
     }
   },
-  methods: {}
+  computed: {
+    continueBtn() {
+      let routeArr = this.$route.path.split("/");
+      let pageName = routeArr[routeArr.length - 1];
+      for (let index = 0; index < this.setupOrder.length; index++) {
+        const element = this.setupOrder[index];
+        if (element == pageName && element != "") {
+          return "/users/setup/" + this.setupOrder[index + 1];
+        }
+      }
+
+      return "/users/signin";
+    },
+    previousBtn() {
+      let routeArr = this.$route.path.split("/");
+      let pageName = routeArr[routeArr.length - 1];
+      for (let index = 0; index < this.setupOrder.length; index++) {
+        const element = this.setupOrder[index];
+        if (pageName == this.setupOrder[0]) {
+          console.log('return false')
+          return false;
+        }
+        if (element == pageName) {
+          return "/users/setup/" + this.setupOrder[index - 1];
+        }
+      }
+
+      return '/';
+    }
+  }
 };
 </script>
 
@@ -62,6 +98,13 @@ export default {
 .progress-btns {
   padding: 0px 60px;
   margin-top: 25px;
+  .continue-btn{
+    float: right
+  }
+    .previous-btn{
+    float: left
+  }
+
   p {
     color: white;
     font-size: 24px;
@@ -74,8 +117,8 @@ export default {
     margin-top: -12.5px;
     margin-left: 7.5px;
   }
-  img.left{
-        margin-top: 15px;
+  img.left {
+    margin-top: 15px;
     margin-left: -51px;
   }
 }
