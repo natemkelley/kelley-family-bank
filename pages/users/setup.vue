@@ -3,14 +3,22 @@
     <div class="container push-top">
       <NuxtChild :test="'RESOLVE_PLZ'" />
       <div class="progress-btns">
-        <NuxtLink v-if="previousBtn" :to="previousBtn" class="previous-btn bigger-sm">
+        <NuxtLink
+          v-if="previousBtn"
+          :to="previousBtn"
+          class="previous-btn bigger-sm"
+        >
           <img
             class="rock-on left shadow3"
             src="@/assets/images/previous.svg"
           />
           <p class="rock-on">previous</p>
         </NuxtLink>
-        <NuxtLink :to="continueBtn" class="continue-btn rock-on bigger-sm">
+        <NuxtLink
+          :to="continueBtn"
+          v-on:click.native="updateProgress()"
+          class="continue-btn rock-on bigger-sm"
+        >
           <p class="rock-on">
             continue<img
               class=" rock-on right shadow3"
@@ -45,6 +53,9 @@ export default {
       ]
     };
   },
+  methods: {
+
+  },
   created() {
     let array = this.setupOrder;
     let setupTutorial = this.$store.state.account.setupTutorial;
@@ -77,7 +88,6 @@ export default {
       for (let index = 0; index < this.setupOrder.length; index++) {
         const element = this.setupOrder[index];
         if (pageName == this.setupOrder[0]) {
-          console.log('return false')
           return false;
         }
         if (element == pageName) {
@@ -85,7 +95,27 @@ export default {
         }
       }
 
-      return '/';
+      return "/";
+    }
+  },
+  watch: {
+    $route(to, from) {
+      let routeArr = from.path.split("/");
+      let pageName = routeArr[routeArr.length - 1];
+      let uid = this.$store.state.account.uid;
+      const k = `setupTutorial.${pageName}`;
+
+
+      
+      this.$fireStore
+        .collection("users")
+        .doc(uid)
+        .update({
+          [k]: true
+        })
+        .then(result => {
+          console.log(pageName, true);
+        });
     }
   }
 };
@@ -98,11 +128,11 @@ export default {
 .progress-btns {
   padding: 0px 60px;
   margin-top: 25px;
-  .continue-btn{
-    float: right
+  .continue-btn {
+    float: right;
   }
-    .previous-btn{
-    float: left
+  .previous-btn {
+    float: left;
   }
 
   p {

@@ -20,10 +20,8 @@ import RichMan from "@/components/users/richMan";
 export default {
   name: "intro",
   components: { RichMan },
-  props: ["test"],
   transition: "slide3d",
   mounted() {
-    console.log(this.test);
   }
 };
 </script>
