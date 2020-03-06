@@ -44,8 +44,7 @@ export default {
         "kidsSetup",
         "acc401K",
         "accSavings",
-        "complete",
-        ""
+        "complete"
       ],
       setupData: null
     };
@@ -61,9 +60,9 @@ export default {
     for (let index = 0; index < array.length; index++) {
       const element = array[index];
       if (!setupTutorial[element]) {
-        /*this.$router.push({
+        this.$router.push({
           path: "/users/setup/" + element
-        });*/
+        });
         return;
       }
     }
@@ -74,11 +73,10 @@ export default {
       let pageName = routeArr[routeArr.length - 1];
       for (let index = 0; index < this.setupOrder.length; index++) {
         const element = this.setupOrder[index];
-        if (element == pageName && element != "") {
+        if (element == pageName && element != "complete") {
           return "/users/setup/" + this.setupOrder[index + 1];
         }
       }
-
       return "/users/signin";
     },
     previousBtn() {

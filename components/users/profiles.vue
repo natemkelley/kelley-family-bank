@@ -50,7 +50,7 @@ export default {
   components: { Avatar, BackBtns, PinEnter, LoadingCircle },
   data() {
     return {
-      profiles: [2, 4, 6],
+      profiles: [10,11,1,2,3,4],
       selectedAvatar: null,
       checking: false,
       loading: true

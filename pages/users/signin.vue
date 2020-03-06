@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="section section1">
-      <div class="swagger">
+    <div class="d-flex align-items-center justify-content-center  section1">
+      <div class="container section-pull">
         <h1 class="title text-center">{{ title }}</h1>
         <LoadingComp class="push-top" v-show="!finishedLoading" />
         <SignInComp
@@ -88,8 +88,6 @@ export default {
 </script>
 <style scoped>
 .title {
-  position: absolute;
-  top: -100px;
   width: 100%;
   text-align: center;
 }
@@ -102,6 +100,7 @@ export default {
   min-height: 100vh;
   color: white;
   overflow: hidden;
+  padding: 0em 2em 3em 2em;
 }
 
 .hiddenb {
@@ -121,15 +120,8 @@ export default {
   display: none;
 }
 
-.swagger {
-  position: absolute;
-  top: 23.5vh;
-  width: 100%;
+.section-pull {
+  padding: 0;
 }
-@media (max-width: 700px) {
-  .slime-header {
-    min-height: 0%;
-    background-size: 700px; /* Force the image to its minimum width */
-  }
-}
+
 </style>
