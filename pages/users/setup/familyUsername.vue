@@ -89,7 +89,7 @@ export default {
   },
   async beforeDestroy() {
     let accountuid = this.$store.state.account.uid;
-    this.$fireStore
+    await this.$fireStore
       .collection("users")
       .doc(accountuid)
       .update({
@@ -98,6 +98,11 @@ export default {
       .then(() => {
         console.log("familyUsername", this.familyName);
       });
+
+    await this.$fireStore
+      .collection("usernames").set({
+    username: this.familyName
+}) 
   }
 };
 </script>

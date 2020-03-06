@@ -1,6 +1,6 @@
 <template>
-  <div class="container setup-cont d-flex align-items-center justify-content-center">
-    <div class="container push-top">
+  <div class="container setup-cont d-flex align-items-stretch justify-content-center">
+    <div class="container ">
       <NuxtChild v-on:incomingData="incomingData" />
       <div class="progress-btns">
         <NuxtLink
@@ -60,9 +60,9 @@ export default {
     for (let index = 0; index < array.length; index++) {
       const element = array[index];
       if (!setupTutorial[element]) {
-        this.$router.push({
+        /*this.$router.push({
           path: "/users/setup/" + element
-        });
+        });*/
         return;
       }
     }
@@ -125,11 +125,10 @@ export default {
 }
 .setup-cont {
   max-width: 850px;
-  height: 100vh;
+  height: 100%;
   min-height: 100vh;
   padding: 60px;
   .container {
-    max-width: 100vw;
     padding: 0px;
   }
 }

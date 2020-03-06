@@ -22,6 +22,7 @@
 
 <script>
 import AvatarsComp from "@/components/users/avatar";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   data() {
@@ -34,6 +35,24 @@ export default {
       if (src) {
         return require(`@/assets/avatars/${src}.svg`);
       }
+    },
+    async deleteOldKids(uid, db) {
+      return new Promise((resolve, reject) => {
+        let ref = db
+          .collection("users")
+          .doc(uid)
+          .collection("profiles")
+          .where("type", "==", "child")
+          .get()
+          .then(querySnapshot => {
+            if (querySnapshot.size != this.number) {
+              querySnapshot.forEach(doc => {
+                doc.ref.delete();
+              });
+            }
+            resolve(querySnapshot.size != this.number);
+          });
+      });
     }
   },
   watch: {
@@ -41,13 +60,17 @@ export default {
       if (this.number <= 0) {
         this.number = 1;
       }
+      if (this.number >= 11) {
+        this.number = 11;
+      }
     }
   },
   computed: {
     kids() {
       let returnArr = [];
       for (let index = 0; index < this.number; index++) {
-        const num = Math.floor(Math.random() * 10) + 1;
+        //const num = Math.floor(Math.random() * 10) + 1;
+        const num = index + 1;
         const x = "avatars_" + num;
         returnArr.push(x + ".svg");
       }
@@ -55,7 +78,40 @@ export default {
       return returnArr;
     }
   },
-  components: { AvatarsComp }
+  components: { AvatarsComp },
+  async beforeDestroy() {
+    let accountuid = this.$store.state.account.uid;
+    let db = this.$fireStore;
+    let cont = await this.deleteOldKids(accountuid, db);
+
+    if (cont) {
+      let batch = db.batch();
+      for (let index = 0; index < this.number; index++) {
+        let template = {
+          type: "child",
+          firstName: null,
+          age: null,
+          birthMonth: null,
+          uuid: null,
+          profilePic: null,
+          nickname: null,
+          email: null
+        };
+        let uuid = uuidv4();
+        template.uuid = uuid;
+        let ref = db
+          .collection("users")
+          .doc(accountuid)
+          .collection("profiles")
+          .doc(uuid);
+        batch.set(ref, template);
+      }
+
+      await batch.commit().then(function() {
+        console.log("saved some kiddohs",this.number);
+      });
+    }
+  }
 };
 </script>
 
@@ -79,7 +135,8 @@ export default {
     img {
       max-width: 60px;
     }
-    .lilspace {
+    .col {
+      padding: 0 5px;
     }
   }
   .calc-cont {

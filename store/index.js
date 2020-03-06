@@ -1,4 +1,3 @@
-
 const Cookie = process.client ? require('js-cookie') : undefined;
 const cookieparser = process.server ? require('cookieparser') : undefined
 
@@ -7,14 +6,14 @@ export const strict = false;
 export const state = () => ({
   account: null,
   userReady: false,
-  activeProfile:null
+  activeProfile: null
 });
 
 export const mutations = {
   setAccount(state, payload) {
     state.account = payload;
   },
-  setActiveProfile(state,payload){
+  setActiveProfile(state, payload) {
     state.activeProfile = payload;
   },
   setUserReady(state, payload) {
@@ -45,7 +44,9 @@ export const getters = {
 };
 
 export const actions = {
-  nuxtServerInit({commit}, ctx) {
+  nuxtServerInit({
+    commit
+  }, ctx) {
     var req = ctx.req;
 
     if (this.$fireAuth === null) {
@@ -66,7 +67,9 @@ export const actions = {
       const parsed = cookieparser.parse(req.headers.cookie)
       try {
         account = JSON.parse(parsed.account)
-        commit("setAccount", account, { expires: 365 });
+        commit("setAccount", account, {
+          expires: 365
+        });
       } catch (err) {
         console.warn('no cookie found')
       }
@@ -83,13 +86,16 @@ export const actions = {
       ssrVerifiedAuthUserClaims = ctx.res.verifiedFireAuthUserClaims;
     }
 
-    console.info(ssrVerifiedAuthUserClaims,ssrVerifiedAuthUser,account)
+    console.info(ssrVerifiedAuthUserClaims, ssrVerifiedAuthUser, account)
     if (ssrVerifiedAuthUserClaims && ssrVerifiedAuthUser && account != null) {
       commit("setAccount", ssrVerifiedAuthUserClaims);
     }
   },
 
-  handleSuccessfulAuthentication({ commit }, { authUser }) {
+  handleSuccessfulAuthentication(ctx, {
+    authUser
+  }) {
+    const commit = ctx.commit;
     // Install servicerWorker if supported on sign-in/sign-up page.
     if (process.browser && "serviceWorker" in navigator) {
       console.log("registering service worker");
@@ -98,28 +104,31 @@ export const actions = {
       });
     }
 
+    console.log('successful auth')
     this.$fireStore
+      .collection("users")
+      .doc(authUser.uid).onSnapshot(docSnapshot => {
+        let data = docSnapshot.data();
+        commit("setAccount", data);
+        commit("setUserReady", true);
+      }, err => {
+        console.log(`Encountered error: ${err}`);
+      });
+
+    /*this.$fireStore
     .collection("users")
     .doc(authUser.uid).get().then(doc=>{
       let data = doc.data()
       commit("setAccount", data);
       commit("setUserReady", true);
       Cookie.set('account', data) // saving token in cookie for server rendering
-    })
+    })*/
   },
 
-  checkVuexStore(ctx) {
-    if (this.$fireAuth === null) {
-      throw "Vuex Store example not working - this.$fireAuth cannot be accessed.";
-    }
-
-    alert(
-      "Success. Nuxt-fire Objects can be accessed in store actions via this.$fire___"
-    );
-    return;
-  },
-
-  async logoutUser({ commit, dispatch }) {
+  async logoutUser({
+    commit,
+    dispatch
+  }) {
     try {
       console.info('logout')
       await this.$fireAuth.signOut();

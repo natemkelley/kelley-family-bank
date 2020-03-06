@@ -20,7 +20,6 @@ export default {
   async mounted() {
     let displayName = this.$store.state.account.familyName || this.$store.state.account.creator;
     this.familyName = displayName.split(' ')[displayName.split(' ').length-1]
-    let accountuid = this.$store.state.account.uid;
   },
   async beforeDestroy() {
     let accountuid = this.$store.state.account.uid;

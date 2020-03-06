@@ -10,7 +10,8 @@ export default ({
 
   createPersistedState({
     storage: window.sessionStorage,
-    paths: ['activeProfile']
+    paths: ['activeProfile'],
+    fetchBeforeUse: true
   })(store);
 }
 

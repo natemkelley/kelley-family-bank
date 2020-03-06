@@ -17,25 +17,20 @@ export default {
     };
   },
   mounted() {
-
-  },
-  methods: {
-
-  },
-  computed: {
-
+    this.password = this.$store.state.account.familyPassword || ""
   },
   async beforeDestroy() {
     let accountuid = this.$store.state.account.uid;
-    this.$fireStore
+    await this.$fireStore
       .collection("users")
       .doc(accountuid)
       .update({
-        password: this.password
+        familyPassword: this.password
       })
       .then(() => {
-        console.log("password", this.password);
+        console.log("password saved");
       });
+
   }
 };
 </script>
@@ -58,6 +53,7 @@ export default {
     text-align: center;
     font-size: 24px;
     width: 50vw;
+    max-width: 140px;
     font-weight: bold;
   }
   .input-cont {
