@@ -25,10 +25,23 @@ import AvatarsComp from "@/components/users/avatar";
 import { v4 as uuidv4 } from "uuid";
 
 export default {
+  transition: "slide3d",
   data() {
     return {
       number: 1
     };
+  },
+  mounted(){
+    let uid = this.$store.state.account.uid;
+    this.$fireStore
+      .collection("users")
+      .doc(uid)
+      .collection("profiles")
+      .where("type", "==", "child")
+      .get()
+      .then(docs => {
+        this.number = docs.size
+      });
   },
   methods: {
     getImgUrl(src) {
@@ -107,8 +120,8 @@ export default {
         batch.set(ref, template);
       }
 
-      await batch.commit().then(function() {
-        console.log("saved some kiddohs",this.number);
+      await batch.commit().then(() => {
+        console.log("saved some kiddohs", this.number);
       });
     }
   }

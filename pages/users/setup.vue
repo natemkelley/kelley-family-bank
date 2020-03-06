@@ -1,7 +1,7 @@
 <template>
   <div class="container setup-cont d-flex align-items-stretch justify-content-center">
     <div class="container ">
-      <NuxtChild v-on:incomingData="incomingData" />
+      <NuxtChild v-on:hideContinue="toggleContinue" />
       <div class="progress-btns">
         <NuxtLink
           v-if="previousBtn"
@@ -14,7 +14,7 @@
           />
           <p class="rock-on">previous</p>
         </NuxtLink>
-        <NuxtLink :to="continueBtn" class="continue-btn rock-on bigger-sm">
+        <NuxtLink v-if="!hideContinue" :to="continueBtn" class="continue-btn rock-on bigger-sm">
           <p class="rock-on">
             continue<img
               class=" rock-on right shadow3"
@@ -46,12 +46,13 @@ export default {
         "accSavings",
         "complete"
       ],
-      setupData: null
+      setupData: null,
+      hideContinue:false
     };
   },
   methods: {
-    incomingData(data, component) {
-      console.log(data, component);
+    toggleContinue(data, component) {
+      this.hideContinue = data
     }
   },
   created() {

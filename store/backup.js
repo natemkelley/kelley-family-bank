@@ -1,3 +1,6 @@
+/*const Cookie = process.client ? require("js-cookie") : undefined;
+const cookieparser = process.server ? require("cookieparser") : undefined;
+
 export const strict = false;
 
 export const state = () => ({
@@ -18,9 +21,9 @@ export const mutations = {
     state.userReady = payload;
   },
   resetStore(state) {
-    state.profiles = null;
     state.account = null;
     state.activeProfile = null;
+    Cookie.remove("account");
   }
 };
 
@@ -127,3 +130,4 @@ export const actions = {
     }
   }
 };
+*/
