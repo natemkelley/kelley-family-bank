@@ -98,11 +98,6 @@ export default {
       .then(() => {
         console.log("familyUsername", this.familyName);
       });
-
-    await this.$fireStore
-      .collection("usernames").set({
-    username: this.familyName
-}) 
   }
 };
 </script>

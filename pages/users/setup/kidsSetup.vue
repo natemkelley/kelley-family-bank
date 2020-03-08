@@ -10,8 +10,28 @@
         >{{ (n + 1) | ordinal }} Child</a
       >
     </div>
-    <div class="bordered d-flex justify-content-center setup-cont">
-      <div class="row"></div>
+    <div class="bordered setup-cont">
+      <div class="row">
+        <div class="col-5">
+          <div class=" d-flex align-items-center justify-content-center">
+            <AvatarSetup src="avatars_2.svg" />
+          </div>
+        </div>
+        <div class="col-7">
+          <div class="input-cont d-flex justify-content-left input-cont">
+            <input type="text" placeholder="first name" />
+          </div>
+          <div class="input-cont d-flex justify-content-left input-cont">
+            <input type="number" placeholder="first name" />
+          </div>
+          <div class="input-cont d-flex justify-content-left input-cont">
+            <select>
+              <option v-for="n in 11" :key="n" value="volvo"
+                >Volvo</option
+              ></select>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -19,11 +39,13 @@
 <script>
 import ordianl from "ordinal";
 import animateScrollTo from "animated-scroll-to";
+import AvatarSetup from "@/components/users/avatar-setup";
 
 const scrollTo = require("scroll-to");
 
 export default {
   transition: "slide3d",
+  components: { AvatarSetup },
   data() {
     return {
       childProfiles: [],
@@ -94,7 +116,6 @@ export default {
       color: black;
     }
   }
-
   h1 {
     text-align: center;
     margin: 0px 0px;
@@ -102,11 +123,11 @@ export default {
   }
   input {
     border: none;
-    text-align: center;
-    font-size: 40px;
-    width: 75px;
+    border-bottom: 2px solid #707070;
+    text-align: left;
+    font-size: 24px;
+    width: 50vw;
     font-weight: bold;
-    margin: 0px 0px;
   }
   .setup-cont {
     min-height: 145px;
@@ -114,23 +135,11 @@ export default {
     border: 4px solid black;
     border-radius: 25px;
     margin: -4px;
-    .bordered {
-    }
+    padding: 25px;
   }
-  .calc-cont {
-    padding: 15px;
-  }
-  .calc-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 3px solid black;
-    background-color: white;
-    img {
-      width: 50%;
-      margin-top: 25%;
-      margin-left: 25%;
-    }
+  .input-cont{
+    padding-bottom: 15px;
   }
 }
+
 </style>

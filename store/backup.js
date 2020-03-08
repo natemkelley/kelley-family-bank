@@ -74,7 +74,7 @@ export const actions = {
       }
     }
 
-    /** Get the VERIFIED authUser from the server */
+    // Get the VERIFIED authUser from the server
     var ssrVerifiedAuthUserClaims;
     var ssrVerifiedAuthUser;
 

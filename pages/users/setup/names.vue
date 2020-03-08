@@ -29,13 +29,13 @@ export default {
       .collection("users")
       .doc(accountuid)
       .collection("profiles")
+      .where("type","==","parent")
       .get()
       .then(docs => {
         docs.forEach(doc => {
           displayName = doc.data().displayName;
         });
       });
-
     let name = displayName || "Mr Monopoly";
     let nameArr = name.split(" ");
     this.first = nameArr[0];

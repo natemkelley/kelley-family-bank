@@ -9,6 +9,7 @@ export const state = () => ({
 
 export const mutations = {
   setAccount(state, payload) {
+    console.log('mutate',payload)
     state.account = payload;
   },
   setActiveProfile(state, payload) {
@@ -111,8 +112,6 @@ export const actions = {
           console.log(`Encountered error: ${err}`);
         }
       );
-
-
   },
 
   async logoutUser({ commit, dispatch }) {

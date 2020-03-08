@@ -2,39 +2,37 @@
   <div class="bordered-container names-container">
     <h1>What should we call your family?</h1>
     <div class="d-flex justify-content-center input-cont">
-      <label for="first">The</label>
-      <input type="text" v-model="familyName" id="first" placeholder="Wong" />
-      <label for="first">Family</label>
+      <label>The</label>
+      <input type="text" v-model="familyName" placeholder="Johnson" />
+      <label>Family</label>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-    transition: "slide3d",
   data() {
     return {
       familyName: null
     };
   },
   async mounted() {
-    let displayName = this.$store.state.account.familyName || this.$store.state.account.creator;
-    this.familyName = displayName.split(' ')[displayName.split(' ').length-1]
+    let displayName =
+      this.$store.state.account.familyName || this.$store.state.account.creator;
+    this.familyName = displayName.split(" ")[displayName.split(" ").length - 1];
   },
   async beforeDestroy() {
-    let accountuid = this.$store.state.account.uid;
-    let db = this.$fireStore
-      .collection("users")
-      .doc(accountuid)
-
+    var accountuid = this.$store.state.account.uid;
+    var db = this.$fireStore.collection("users").doc(accountuid);
     await db
       .update({
         familyName: this.familyName
       })
       .then(result => {
-        console.log("saved familyName", this.familyName);
+        console.log(result,"saved familyName", this.familyName);
       });
-  }
+  },
+  transition: "slide3d"
 };
 </script>
 
@@ -50,7 +48,7 @@ export default {
     margin-right: 15px;
     font-weight: bold;
   }
-    label:last-child {
+  label:last-child {
     font-size: 24px;
     margin-right: 0px;
   }
@@ -62,7 +60,7 @@ export default {
     width: 30vw;
     min-width: 150px;
     font-weight: bold;
-        padding-bottom: 10px;
+    padding-bottom: 10px;
   }
   .input-cont {
     padding: 15px;
