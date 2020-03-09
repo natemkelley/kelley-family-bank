@@ -1,7 +1,7 @@
 <template>
   <div class="bordered-container names-container">
     <h1>Setup your kid’s accounts</h1>
-    <div class="children-ordinal">
+    <div class="children-ordinal" v-show="!completed">
       <a
         v-for="(child, n) in childProfiles"
         :key="n"
@@ -10,7 +10,7 @@
         >{{ (n + 1) | ordinal }} Child</a
       >
     </div>
-    <div class="bordered setup-cont">
+    <div class="bordered setup-cont" v-show="!completed">
       <div class="row">
         <div class="col-md-5 col-sm-12 avatar-cont">
           <div class=" d-flex align-items-center justify-content-center">
@@ -68,6 +68,9 @@
         </div>
       </div>
     </div>
+    <div class="completed setup-cont" v-if="completed">
+      <h1>completed!</h1>
+    </div>
   </div>
 </template>
 
@@ -104,7 +107,8 @@ export default {
       nextKidCont: false,
       birthMonth: "Birth Month",
       name: null,
-      src: null
+      src: null,
+      completed:false
     };
   },
   mounted() {
@@ -212,6 +216,7 @@ export default {
 
       if (n >= this.childProfiles.length) {
         if (this.activeChild + 1 >= this.childProfiles.length) {
+          this.completed = true;
           this.$emit("hideContinue", false);
           return;
         }
@@ -271,6 +276,14 @@ export default {
 <style lang="scss" scoped>
 .names-container {
   padding: 0px;
+.completed{
+ background:#43ED93!important;
+ color:black;
+ h1{
+   padding-bottom: 45px!important;
+ }
+}
+
   .children-ordinal {
     overflow: auto;
     white-space: nowrap;
@@ -346,6 +359,8 @@ export default {
     margin-left: 7.5px;
   }
 }
+
+
 
 @media only screen and (max-width: 600px) {
   .names-container .setup-cont {
