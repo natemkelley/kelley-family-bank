@@ -10,7 +10,7 @@
 
 
 .bounce-enter-active {
-  animation: bounce-in .8s;
+  animation: bounce-in .5s;
 }
 
 .bounce-leave-active {
@@ -19,11 +19,13 @@
 
 @keyframes bounce-in {
   0% {
-    transform: scale(0)
+    transform: scale(0.5);
+    opacity:0;
   }
 
   50% {
-    transform: scale(1.5)
+    transform: scale(1.1);
+    opacity: 1;
   }
 
   100% {
@@ -37,11 +39,12 @@
   }
 
   50% {
-    transform: scale(1.5)
+    transform: scale(1.1)
   }
 
   100% {
-    transform: scale(0)
+    transform: scale(0.5);
+    opacity:0;
   }
 }
 

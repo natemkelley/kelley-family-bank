@@ -69,13 +69,14 @@ export default {
   /*background: url("~assets/backgrounds/transparent_background2.svg");*/
   min-height: 100vh;
   transition: all 0.75s;
+  height: 100%;
 }
 .progressBar {
   transition: all 0.75s ease-in;
   height: 15px;
   background: #ffd115;
   box-shadow: 1px 3px #0000001f;
-      position: absolute;
+      position: fixed;
     top: 0;
 }
 </style>

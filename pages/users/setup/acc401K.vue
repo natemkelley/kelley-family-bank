@@ -25,9 +25,9 @@
     <div class="add-401k-cont row">
       <div class="add401k shadow5" v-for="(plan, n) in plans" :key="n">
         <div class="">
-          <p class="title">Mission</p>
-          <p class="apr">10% APR</p>
-          <p class="year">2019</p>
+          <p class="title">{{ plan.accountName || "No Name" }}</p>
+          <p class="apr" v-show="plan.APR">{{ plan.APR + "% APR" }}</p>
+          <p class="year" v-show="plan.year">{{ plan.year }}</p>
         </div>
         <div class="delete" @click="removePlan(plan)">
           <img src="@/assets/images/minus.png" />
@@ -38,12 +38,38 @@
         <img src="@/assets/images/plus.png" />
       </div>
     </div>
-    <div class="details-cont">
+
+    <div class="details-cont" v-show="activePlan">
       <div class="row">
-        <div class="settings-list">
-            <div class="row set" v-for="set in settingsList" :key="set">{{set}}</div>
+        <div class="col settings-list">
+          <div
+            class="row set"
+            v-for="set in settingsList"
+            :key="set"
+            @click="setActiveSetting(set)"
+            :class="{ active: set === activeSetting }"
+          >
+            {{ set }}
+          </div>
         </div>
-        <div class="settings"></div>
+
+        <div class="col settings">
+          <transition name="bounce" mode="out-in">
+            <component
+              v-bind:is="componentFile"
+              :incomingData="setData"
+            ></component>
+          </transition>
+
+          <div class="continue-btn">
+            <p class="rock-on">
+              continue<img
+                class=" rock-on right shadow3"
+                src="@/assets/images/continue.svg"
+              />
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -57,10 +83,25 @@ export default {
     return {
       plans: [],
       activePlan: null,
-      settingsList:['name of account','purpose','kids','withdraw date','match','max-growth','APR']
+      settingsList: [
+        "name of account",
+        "purpose",
+        "kids",
+        "withdraw date",
+        "match",
+        "max-growth",
+        "APR"
+      ],
+      activeSetting: null
     };
   },
+  mounted() {
+    this.setActiveSetting(this.settingsList[0]);
+  },
   methods: {
+    setData(data) {
+      console.log(data);
+    },
     showMoreText() {
       let el = this.$el.querySelector(".more-btn-img");
       let txt = this.$el.querySelector(".the-text");
@@ -76,9 +117,9 @@ export default {
     startAddPlan() {
       let uuid = uuidv4();
       var template = {
-        accountName: "Testing",
+        accountName: null,
         children: [],
-        purpose: "",
+        purpose: null,
         withdrawDate: null,
         match: null,
         maxPerYear: null,
@@ -95,6 +136,27 @@ export default {
           this.plans.splice(n, 1);
         }
       });
+      if (this.plans.length == 0) {
+        this.activePlan = null;
+      }
+    },
+    setActiveSetting(name) {
+      this.activeSetting = name;
+    },
+    importComponent(path) {
+      return () => import(`@/components/users/401k/${this.componentName}.vue`);
+    }
+  },
+  computed: {
+    componentFile() {
+      return this.importComponent(this.componentName);
+    },
+    componentName() {
+      let name = "nameofaccount";
+      if (this.activeSetting) {
+        name = this.activeSetting.replace(/\s/g, "").toLowerCase();
+      }
+      return name;
     }
   }
 };
@@ -200,26 +262,54 @@ export default {
   border: 4px solid black;
   border-radius: 25px;
   box-shadow: 0px 5px 0px 0px rgba(0, 0, 0, 0.411);
-  padding:12.5px;
+  padding: 12.5px;
 
-  .settings-list{
-      width: 185px;
-            height: 100%;
+  .row {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+  .settings-list {
+    max-width: 196px;
+    height: 100%;
     border-right: 4px solid black;
     min-height: 345px;
-  }
-  .row{
-      margin-right: 0px;
-      margin-left: 0px;
-  }
-  .set{
+    .active {
+      color: black !important;
+    }
+    .set {
       margin-top: 9px;
       font-size: 24px;
-      color:gray;
+      color: gray;
       font-weight: bold;
-  }
-  .set:first-child{
+    }
+    .set:first-child {
       margin-top: 3px;
+    }
+  }
+}
+
+.settings {
+  padding: 5px 15px 5px 15px;
+}
+
+.continue-btn {
+  margin-right: 42px;
+  opacity: 1;
+  transition: 0.25s all ease;
+      position: absolute;
+    bottom: -30px;
+    right: 7.5px;
+  p {
+    color: black;
+    font-size: 24px;
+  }
+  img {
+    height: 42px;
+    position: absolute;
+  }
+  img.right {
+    margin-top: -12.5px;
+    margin-left: 7.5px;
   }
 }
 
