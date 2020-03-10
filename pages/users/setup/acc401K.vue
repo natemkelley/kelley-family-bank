@@ -346,5 +346,8 @@ export default {
       height: 100%;
     }
   }
+  .settings-list{
+    display:none;
+  }
 }
 </style>
