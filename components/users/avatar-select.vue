@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="avatar-select">
     <div class="avatar clickable" :class="{ selected: selected }">
       <img class="picture" :src="resolve_img_url" />
       <div class="bottom d-flex align-items-center justify-content-center">
@@ -37,8 +37,6 @@ export default {
   overflow: hidden;
   border: 0.23em solid black;
   border-radius: 50%;
-  max-width: 80px;
-  width: 100%;
   .picture {
     background: #ebe8db;
     background: rgb(208, 242, 255);
@@ -60,14 +58,19 @@ export default {
   }
 }
 h3 {
-  position: absolute;
   width: 100%;
   text-align: center;
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 5px;
 }
 
 .selected .bottom {
   height: 100%;
+}
+
+.avatar-select{
+    max-width: 100px;
+    min-width: 90px;
+    width: 100%;
 }
 </style>

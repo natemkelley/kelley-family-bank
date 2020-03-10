@@ -40,7 +40,7 @@
     </div>
 
     <div class="details-cont" v-if="activePlan">
-      <div class="row">
+      <div class="d-flex row">
         <div class="col settings-list">
           <div
             class="row set"
@@ -284,7 +284,7 @@ export default {
   border: 4px solid black;
   border-radius: 25px;
   box-shadow: 0px 5px 0px 0px rgba(0, 0, 0, 0.411);
-  padding: 12.5px;
+  padding: 16.5px 12.5px 12.5px 12.5px;
 
   .row {
     margin-right: 0px;
@@ -292,7 +292,6 @@ export default {
   }
   .settings-list {
     max-width: 196px;
-    height: 100%;
     border-right: 4px solid black;
     min-height: 345px;
     .active {
@@ -311,16 +310,19 @@ export default {
 }
 
 .settings {
-  padding: 5px 15px 5px 15px;
-}
+    padding: 1px 0px 5px 20px;
+    position:relative;
+    }
 
 .continue-btn {
-  margin-right: 42px;
   opacity: 1;
-  transition: 0.25s all ease;
-  position: absolute;
-  bottom: -30px;
-  right: 7.5px;
+  right: 7.5px;text-align: right;
+    margin-right: 42px;
+    opacity: 1;
+    transition: 0.25s all ease;
+        position: absolute;
+    bottom: 0;
+    margin-bottom: -15px;
   p {
     color: black;
     font-size: 24px;
