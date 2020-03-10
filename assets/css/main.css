@@ -216,3 +216,9 @@ p {
   -webkit-box-pack: center !important;
 justify-content: center !important;
 }}
+
+.overflow-hidden{
+  overflow: hidden;
+}
+
+

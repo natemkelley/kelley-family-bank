@@ -24,7 +24,7 @@
 
     <div class="add-401k-cont row">
       <div class="add401k shadow5" v-for="(plan, n) in plans" :key="n">
-        <div class="">
+        <div class="overflow-hidden">
           <p class="title">{{ plan.accountName || "No Name" }}</p>
           <p class="apr" v-show="plan.APR">{{ plan.APR + "% APR" }}</p>
           <p class="year" v-show="plan.year">{{ plan.year }}</p>
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div class="details-cont" v-show="activePlan">
+    <div class="details-cont" v-if="activePlan">
       <div class="row">
         <div class="col settings-list">
           <div
@@ -57,11 +57,12 @@
           <transition name="bounce" mode="out-in">
             <component
               v-bind:is="componentFile"
-              :incomingData="setData"
+              v-on:incomingData="setData"
+              v-bind:activePlan="activePlan"
             ></component>
           </transition>
 
-          <div class="continue-btn">
+          <div class="continue-btn" @click="setActiveSetting(null)">
             <p class="rock-on">
               continue<img
                 class=" rock-on right shadow3"
@@ -89,18 +90,24 @@ export default {
         "kids",
         "withdraw date",
         "match",
-        "max-growth",
+        "max growth",
         "APR"
       ],
-      activeSetting: null
+      activeSetting: null,
+      complete:false
     };
   },
   mounted() {
     this.setActiveSetting(this.settingsList[0]);
   },
   methods: {
-    setData(data) {
-      console.log(data);
+    setData(incoming) {
+      this.activePlan[incoming.setting] = incoming.data;
+      this.plans.forEach((element, n) => {
+        if (element.uuid == this.activePlan.uuid) {
+          this.plans[n] = this.activePlan;
+        }
+      });
     },
     showMoreText() {
       let el = this.$el.querySelector(".more-btn-img");
@@ -141,6 +148,19 @@ export default {
       }
     },
     setActiveSetting(name) {
+      let index = this.settingsList.indexOf(this.activeSetting);
+
+      if(index+1 >= this.settingsList.length){
+        alert('here')
+        this.complete = true;
+        this.activeSetting = 'complete';
+        return
+      }
+
+      if (!name) {
+        name = this.settingsList[index + 1];
+      }
+
       this.activeSetting = name;
     },
     importComponent(path) {
@@ -224,6 +244,8 @@ export default {
     margin: 5px;
     border: 4px solid black;
     background-color: white;
+    white-space: pre-wrap;
+    text-overflow: ellipsis;
     p:first-child {
       font-weight: bold;
     }
@@ -296,9 +318,9 @@ export default {
   margin-right: 42px;
   opacity: 1;
   transition: 0.25s all ease;
-      position: absolute;
-    bottom: -30px;
-    right: 7.5px;
+  position: absolute;
+  bottom: -30px;
+  right: 7.5px;
   p {
     color: black;
     font-size: 24px;
