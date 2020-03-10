@@ -4,10 +4,12 @@
 
     <div class="read-more container">
       <div class="row">
-        <div class="col-1 more-btn" @click="showMoreText">
-          <img class="more-btn-img" src="@/assets/images/continue.svg" />
+        <div class="col-md-1 col-sm-3" @click="showMoreText">
+          <div class="more-btn">
+            <img class="more-btn-img" src="@/assets/images/continue.svg" />
+          </div>
         </div>
-        <p class="col-11 the-text">
+        <p class="col-md-11 col-sm-9 the-text">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
           imperdiet, nulla et dictum interdum, nisi lorem egestas vitae scel
           erisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec
@@ -20,31 +22,79 @@
       </div>
     </div>
 
-    <div class="d-flex justify-content-center input-cont">
-      <label for="first">First</label>
-      <input type="text" id="first" placeholder="First Name" />
+    <div class="add-401k-cont row">
+      <div class="add401k shadow5" v-for="(plan, n) in plans" :key="n">
+        <div class="">
+          <p class="title">Mission</p>
+          <p class="apr">10% APR</p>
+          <p class="year">2019</p>
+        </div>
+        <div class="delete" @click="removePlan(plan)">
+          <img src="@/assets/images/minus.png" />
+        </div>
+      </div>
+
+      <div class="add401k shadow5 bigger-sm" @click="startAddPlan">
+        <img src="@/assets/images/plus.png" />
+      </div>
     </div>
-    <div class="d-flex justify-content-center input-cont">
-      <label for="last">Last</label>
-      <input type="text" id="last" placeholder="Last Name" />
+    <div class="details-cont">
+      <div class="row">
+        <div class="settings-list">
+            <div class="row set" v-for="set in settingsList" :key="set">{{set}}</div>
+        </div>
+        <div class="settings"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
+
 export default {
+  data() {
+    return {
+      plans: [],
+      activePlan: null,
+      settingsList:['name of account','purpose','kids','withdraw date','match','max-growth','APR']
+    };
+  },
   methods: {
     showMoreText() {
       let el = this.$el.querySelector(".more-btn-img");
-      let txt = this.$el.querySelector('.the-text')
+      let txt = this.$el.querySelector(".the-text");
       console.log();
       if (!el.classList.contains("flipped")) {
         el.classList.add("flipped");
-        txt.classList.add('unhid')
+        txt.classList.add("unhid");
       } else {
         el.classList.remove("flipped");
-                txt.classList.remove('unhid')
+        txt.classList.remove("unhid");
       }
+    },
+    startAddPlan() {
+      let uuid = uuidv4();
+      var template = {
+        accountName: "Testing",
+        children: [],
+        purpose: "",
+        withdrawDate: null,
+        match: null,
+        maxPerYear: null,
+        maxGrowth: null,
+        APR: null,
+        uuid: uuid
+      };
+      this.plans.push(template);
+      this.activePlan = template;
+    },
+    removePlan(ctx) {
+      this.plans.forEach((element, n) => {
+        if (element.uuid == ctx.uuid) {
+          this.plans.splice(n, 1);
+        }
+      });
     }
   }
 };
@@ -99,6 +149,90 @@ export default {
   .unhid {
     height: 185px;
     max-height: 100%;
+  }
+}
+
+.add-401k-cont {
+  margin-top: 25px;
+  .add401k {
+    padding: 18.5px;
+    width: 125px;
+    height: 125px;
+    border-radius: 25%;
+    margin: 5px;
+    border: 4px solid black;
+    background-color: white;
+    p:first-child {
+      font-weight: bold;
+    }
+    p {
+      margin-top: 0px;
+      margin-top: 0px;
+      margin-bottom: 2px;
+    }
+    img {
+      width: 50%;
+      margin-top: 25%;
+      margin-left: 25%;
+    }
+  }
+  .delete {
+    position: absolute;
+    top: -10px;
+    right: -8px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 4px solid black;
+    background-color: white;
+    img {
+      width: 50%;
+      margin-top: 25%;
+      margin-left: 25%;
+    }
+  }
+}
+
+.details-cont {
+  margin-top: 25px;
+  min-height: 400px;
+  background-color: white;
+  border: 4px solid black;
+  border-radius: 25px;
+  box-shadow: 0px 5px 0px 0px rgba(0, 0, 0, 0.411);
+  padding:12.5px;
+
+  .settings-list{
+      width: 185px;
+            height: 100%;
+    border-right: 4px solid black;
+    min-height: 345px;
+  }
+  .row{
+      margin-right: 0px;
+      margin-left: 0px;
+  }
+  .set{
+      margin-top: 9px;
+      font-size: 24px;
+      color:gray;
+      font-weight: bold;
+  }
+  .set:first-child{
+      margin-top: 3px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .names-container {
+    padding: 1.5em 1.8em;
+    .container {
+      padding-right: 0px;
+      padding-left: 0px;
+    }
+    .unhid {
+      height: 100%;
+    }
   }
 }
 </style>
