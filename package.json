@@ -33,6 +33,7 @@
     "uuid": "^7.0.1",
     "velocity-animate": "^1.5.2",
     "vue-images-loaded": "^1.1.2",
+    "vuejs-datepicker": "^1.6.2",
     "vuex-persist": "^2.2.0",
     "vuex-persistedstate": "^2.7.1"
   },

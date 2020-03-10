@@ -105,7 +105,6 @@ export default {
 
 .input {
   display: inline-block;
-  float: left;
   background: white;
   border: 3px solid black;
   border-radius: 25%;
