@@ -1,5 +1,7 @@
 <template>
-  <div class="container setup-cont d-flex align-items-stretch justify-content-center">
+  <div
+    class="container setup-cont d-flex align-items-stretch justify-content-center"
+  >
     <div class="container ">
       <NuxtChild v-on:hideContinue="toggleContinue" />
       <div class="progress-btns">
@@ -14,7 +16,11 @@
           />
           <p class="rock-on">previous</p>
         </NuxtLink>
-        <NuxtLink v-if="!hideContinue" :to="continueBtn" class="continue-btn rock-on bigger-sm">
+        <NuxtLink
+          v-if="!hideContinue"
+          :to="continueBtn"
+          class="continue-btn rock-on bigger-sm"
+        >
           <p class="rock-on">
             continue<img
               class=" rock-on right shadow3"
@@ -47,12 +53,12 @@ export default {
         "complete"
       ],
       setupData: null,
-      hideContinue:false
+      hideContinue: false
     };
   },
   methods: {
     toggleContinue(data, component) {
-      this.hideContinue = data
+      this.hideContinue = data;
     }
   },
   created() {
@@ -67,6 +73,9 @@ export default {
         return;
       }
     }
+    /*this.$router.push({
+      path: "/users/setup/" + "intro"
+    });*/
   },
   computed: {
     continueBtn() {
@@ -113,7 +122,7 @@ export default {
           [k]: true
         })
         .then(result => {
-          console.log(pageName,'saved to', true);
+          console.log(pageName, "saved to", true);
         });
     }
   }
@@ -121,7 +130,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container{
+.container {
   max-width: 850px;
 }
 .setup-cont {
@@ -142,8 +151,8 @@ export default {
   .setup-cont {
     padding: 30px;
   }
-  .push-top{
-        margin-top: 0;
+  .push-top {
+    margin-top: 0;
   }
 }
 

@@ -1,18 +1,11 @@
 <template>
-  <div>
-    <div class="row" v-if="!large">
-      <h4>enter passcode</h4>
-    </div>
-    <div class="keys black" :class="{ row: !large }">
-      <div class="input-cont">
-        <input
-          v-for="n in 4"
-          :key="n + 'passcode'"
-          :value="passcodeArray[n - 1]"
-          type="number"
-          class="input shadow5"
-        />
-        
+  <div class="row">
+    <div class="keys black" :class="{offsetLarge:!large}">
+      <div class="d-flex justify-content-center">
+                          <h4 v-if="!large">enter passcode</h4>
+        <div v-for="n in 4" :key="n + 'passcode'" class="input-pins shadow5">
+          <input :value="passcodeArray[n - 1]" type="text" class="" />
+        </div>
       </div>
       <div class="hidden-cont">
         <input
@@ -20,7 +13,7 @@
           class="hidden"
           v-model="passcode"
           @keyup="numberPunched"
-          @focus="updateSelectedInput"
+          @click="clearInput"
         />
       </div>
     </div>
@@ -53,15 +46,26 @@ export default {
       }
     },
     updateSelectedInput() {
-      var inputs = this.$el.querySelectorAll(".input");
-      inputs.forEach(input => {
-        if (input.value && this.passcode) {
-          input.classList.add("selected");
-        } else {
-          input.classList.remove("selected");
-        }
+      var inputCont = this.$el.querySelectorAll(".input-pins");
+      var inputs = this.$el.querySelectorAll("input");
+
+      inputCont.forEach((element, n) => {
+        element.classList.remove("selected");
       });
-      inputs[0].classList.add("selected");
+
+      if (this.passcode) {
+        var digits = this.passcode.toString().split("");
+        var realDigits = digits.map(Number);
+
+        realDigits.forEach((element, n) => {
+          inputCont[n].classList.add("selected");
+        });
+      }
+      console.log(realDigits);
+    },
+    clearInput() {
+      this.passcode = '';
+      this.updateSelectedInput();
     }
   },
   computed: {
@@ -103,11 +107,17 @@ export default {
   }
 }
 
-.input {
+.input-pins {
   display: inline-block;
+  margin: 0px 2.5px;
   background: white;
   border: 3px solid black;
   border-radius: 25%;
+}
+
+input {
+  background: transparent;
+  border: none;
   width: 1.4em;
   height: 1.4em;
   color: black;
@@ -116,7 +126,7 @@ export default {
   margin-right: 0.5rem;
   text-align: center;
 }
-.input:last-child {
+input:last-child {
   margin: 0;
 }
 .center {
@@ -127,6 +137,7 @@ export default {
 h4 {
   float: right;
   margin-top: 10px;
+  margin-bottom: -5px;
   color: gray;
   transition: color 0.5s ease;
 }
@@ -134,7 +145,15 @@ h4 {
   background: rgb(216, 250, 243);
 }
 .keys {
-  margin-top: -25px;
+  position: relative;
+  h4{
+    position: absolute;
+    top: -45px;
+    margin-left: -45px;
+  }
+}
+.offsetLarge{
+    margin-top: 41px;
 }
 .row {
   margin-right: 0;

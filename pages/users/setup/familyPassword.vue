@@ -8,7 +8,7 @@
         large="true"
       />
     </div>
-    <p class="text-center">You will use this to sign into your account. {{incomingPasscode}}</p>
+    <p class="text-center">You will use this to sign into your account.</p>
   </div>
 </template>
 
@@ -50,7 +50,7 @@ export default {
       .get()
       .then(doc => {
         this.incomingPasscode = doc.data().passcode;
-        console.log('incoming',this.incomingPasscode);
+        //console.log('incoming',this.incomingPasscode);
       });
 
     //this.passcode = this.$store.state.account.familyPassword || "";
@@ -65,7 +65,7 @@ export default {
       .where("type", "==", "parent")
       .get()
       .then(docs => {
-        console.log(docs, uid);
+        //console.log(docs, uid);
         docs.forEach(element => {
           uuid = element.data().uuid;
         });
@@ -98,21 +98,9 @@ export default {
   h1 {
     text-align: center;
     margin-top: 0px;
+    margin-bottom: 10px;
   }
-  label {
-    font-size: 24px;
-    margin-right: 15px;
-    font-weight: bold;
-  }
-  input {
-    border: none;
-    border-bottom: 2px solid #707070;
-    text-align: center;
-    font-size: 24px;
-    width: 50vw;
-    max-width: 140px;
-    font-weight: bold;
-  }
+
   .input-cont {
     padding: 15px;
   }
