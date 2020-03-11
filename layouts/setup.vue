@@ -78,5 +78,6 @@ export default {
   box-shadow: 1px 3px #0000001f;
       position: fixed;
     top: 0;
+    z-index: 999;
 }
 </style>

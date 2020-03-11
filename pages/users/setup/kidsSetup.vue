@@ -233,6 +233,8 @@ export default {
     }
   },
   async beforeDestroy() {
+    this.$emit("hideContinue", false);
+
     let uid = this.$store.state.account.uid;
     let db = this.$fireStore;
     let batch = db.batch();
@@ -248,8 +250,6 @@ export default {
     await batch.commit().then(() => {
       console.log("saved some kiddohs", this.childProfiles);
     });
-
-    this.$emit("hideContinue", false);
   },
   computed: {
     nextChildActive: {

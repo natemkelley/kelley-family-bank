@@ -112,7 +112,6 @@ export default {
     showMoreText() {
       let el = this.$el.querySelector(".more-btn-img");
       let txt = this.$el.querySelector(".the-text");
-      console.log();
       if (!el.classList.contains("flipped")) {
         el.classList.add("flipped");
         txt.classList.add("unhid");
@@ -128,8 +127,9 @@ export default {
         children: [],
         purpose: null,
         withdrawDate: null,
-        match: null,
-        maxPerYear: null,
+        matchStatus: null,
+        maxPeriod: null,
+        maxPerPeriod:null,
         maxGrowth: null,
         APR: null,
         uuid: uuid
@@ -151,7 +151,6 @@ export default {
       let index = this.settingsList.indexOf(this.activeSetting);
 
       if(index+1 >= this.settingsList.length){
-        alert('here')
         this.complete = true;
         this.activeSetting = 'complete';
         return
@@ -322,7 +321,7 @@ export default {
     transition: 0.25s all ease;
         position: absolute;
     bottom: 0;
-    margin-bottom: -15px;
+    margin-bottom: -27.5px;
   p {
     color: black;
     font-size: 24px;

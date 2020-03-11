@@ -1,5 +1,7 @@
 <template>
-    <div></div>
+    <div>
+        c3 charts or chartjs
+    </div>
 </template>
 
 <script>

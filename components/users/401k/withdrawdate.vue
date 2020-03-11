@@ -27,6 +27,7 @@
             wrapper-class="datepicker-wrapper"
             placeholder="Select Date"
             v-model="date"
+            :disabled-dates="state.disabledDates"
             @closed="inputChanged"
           ></datepicker>
         </p>
@@ -44,14 +45,27 @@ export default {
     Datepicker
   },
   mounted() {
-    this.data = this.activePlan.withdrawDate ? true: false;
-    this.date = (this.activePlan.withdrawDate)? this.activePlan.withdrawDate:null
+    this.data = this.activePlan.withdrawDate ? true : false;
+    this.date = this.activePlan.withdrawDate
+      ? this.activePlan.withdrawDate
+      : null;
   },
   data() {
     return {
       data: true,
       date: null
     };
+  },
+  computed: {
+    state() {
+      let dd = {
+        disabledDates: {
+          to: new Date()
+        }
+      };
+
+      return dd;
+    }
   },
   filters: {
     parser(boo) {
@@ -69,7 +83,7 @@ export default {
     },
     inputChanged() {
       let setting = "withdrawDate";
-      let data = this.date;
+      let data = this.data ? this.date : null;
       let template = {
         setting,
         data
@@ -116,6 +130,7 @@ export default {
 .datepicker-wrapper {
   margin-top: 5px;
   border: 3px solid black;
+  border-radius: 12.5px;
   width: 100%;
   text-align: center;
   font-size: 16px;
