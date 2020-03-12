@@ -37,12 +37,14 @@ export default {
   overflow: hidden;
   border: 0.23em solid black;
   border-radius: 50%;
+  background: #d0f2ff;
+  max-height: 100px;
   .picture {
     background: #ebe8db;
     background: rgb(208, 242, 255);
     height: 100%;
     width: 100%;
-    filter: drop-shadow(0px 3px 0px rgba(0, 0, 0, 0.45));
+        margin-bottom: -4px;
   }
   .bottom {
     position: absolute;

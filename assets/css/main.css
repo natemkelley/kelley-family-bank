@@ -13,7 +13,7 @@ h3,
 h4,
 h5,
 h6,
-p,input {
+p,input,textarea {
   cursor: url('../cursors/cursor-text.png'), auto;
 }
 

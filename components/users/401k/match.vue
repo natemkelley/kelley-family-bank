@@ -13,7 +13,7 @@
         <div class="col-4 d-flex align-items-center">
           <div
             @click="toggleData"
-            class="yesno-btn yes"
+            class="clickable yesno-btn yes"
             :class="{ yes: matchStatus, no: !matchStatus }"
           >
             {{ matchStatus | parser }}
@@ -33,7 +33,7 @@
               />
             </span>
             a
-            <select v-model="selectedPeriod">
+            <select v-model="selectedPeriod" class="clickable">
               <option v-for="value in periods" :key="value" :value="value">{{
                 value
               }}</option> </select
@@ -44,7 +44,7 @@
       <div class="row">
         <div class="col-12">
           <p class="info" v-show="matchStatus">
-            If you child contributes up to the match
+            If your child contributes up to the match
             <strong>${{ match }}</strong> every
             <strong>{{ selectedPeriod }}</strong> they will save
             <strong>${{ upToTheMatch }}</strong> over
@@ -55,7 +55,7 @@
             >.
           </p>
           <p class="info" v-show="!matchStatus">
-            If you child contributes
+            If your child contributes
             <strong>${{ match }}</strong> every
             <strong>{{ selectedPeriod }}</strong> they will save
             <strong>${{ upToTheMatch }}</strong> over
@@ -137,10 +137,12 @@ export default {
         xTickArr.push(test.format("ll"));
 
         //match
-        match.push(this.match * (index + 1));
+        if (this.matchStatus) {
+          match.push(this.match * (index + 1));
+        }
 
         //contributions
-        contributions.push(20 * index);
+        contributions.push(this.match * (index + 1));
       }
 
       const initialOptions = {
@@ -193,8 +195,9 @@ export default {
   },
   computed: {
     upToTheMatch() {
+      let multiplier = this.matchStatus ? 2:1
       return this.numberWithCommas(
-        (this.match * Math.max(1, this.numberOfPeriods) * 2).toFixed(0)
+        (this.match * Math.max(1, this.numberOfPeriods) * multiplier).toFixed(0)
       );
     },
     numberOfPeriods() {

@@ -11,7 +11,7 @@
       <div class="col-4 d-flex align-items-center">
         <div
           @click="toggleData"
-          class="yesno-btn yes"
+          class="yesno-btn yes clickable"
           :class="{ yes: data, no: !data }"
         >
           {{ data | parser }}
@@ -23,7 +23,7 @@
         <p>
           This account will stop growing on:
           <datepicker
-            input-class="datepicker-input"
+            input-class="datepicker-input clickable"
             wrapper-class="datepicker-wrapper"
             placeholder="Select Date"
             v-model="date"

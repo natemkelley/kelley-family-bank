@@ -29,7 +29,7 @@
           <p class="apr" v-show="plan.APR">{{ plan.APR + "% APR" }}</p>
           <p class="year" v-show="plan.year">{{ plan.year }}</p>
         </div>
-        <div class="delete" @click="removePlan(plan)">
+        <div class="delete clickable bigger-sm" @click="removePlan(plan)">
           <img src="@/assets/images/minus.png" />
         </div>
       </div>
@@ -43,7 +43,7 @@
       <div class="d-flex row">
         <div class="col settings-list">
           <div
-            class="row set"
+            class="row set clickable"
             v-for="set in settingsList"
             :key="set"
             @click="setActiveSetting(set)"
@@ -321,7 +321,7 @@ export default {
     transition: 0.25s all ease;
         position: absolute;
     bottom: 0;
-    margin-bottom: -27.5px;
+    margin-bottom: -21.5px;
   p {
     color: black;
     font-size: 24px;
