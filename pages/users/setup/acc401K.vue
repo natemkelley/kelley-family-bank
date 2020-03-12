@@ -26,8 +26,8 @@
       <div class="add401k clickable shadow5" :class="{selected:(plan.uuid == activePlan.uuid)}" v-for="(plan, n) in plans" :key="n">
         <div class="overflow-hidden">
           <p class="title">{{ plan.accountName || "No Name" }}</p>
-          <p class="apr" v-show="plan.APR">{{ plan.APR + "% APR" }}</p>
-          <p class="year" v-show="plan.year">{{ plan.year }}</p>
+          <p class="apr" v-if="plan.APR">{{ plan.APR + "% APR" }}</p>
+          <p class="year" v-if="plan.withdrawDate">{{ plan.withdrawDate | formatDate }}</p>
         </div>
         <div class="delete clickable bigger-sm" @click="removePlan(plan)">
           <img src="@/assets/images/minus.png" />
@@ -65,7 +65,7 @@
           <div class="continue-btn" @click="setActiveSetting(null)">
             <p class="clickable">
               continue<img
-                class=" rock-on right shadow3"
+                class=" clickable right shadow3"
                 src="@/assets/images/continue.svg"
               />
             </p>
@@ -78,6 +78,7 @@
 
 <script>
 import { v4 as uuidv4 } from "uuid";
+import moment from 'moment';
 
 export default {
   data() {
@@ -99,6 +100,11 @@ export default {
   },
   mounted() {
     this.setActiveSetting(this.settingsList[0]);
+  },
+  filters:{
+    formatDate(date){
+    return moment(date).format('MMM YYYY');
+    }
   },
   methods: {
     setData(incoming) {
@@ -132,7 +138,7 @@ export default {
         matchPerPeriod:null,
         maxGrowth: null,
         maxGrowthStatus:false,
-        APR: null,
+        apr: null,
         uuid: uuid
       };
       this.plans.push(template);

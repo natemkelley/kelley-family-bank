@@ -31,6 +31,7 @@
     "nuxt-fire": "^3.5.5",
     "ordinal": "^1.0.3",
     "scroll-to": "0.0.2",
+    "tvm-calculator": "^2.0.0",
     "typed.js": "^2.0.11",
     "uuid": "^7.0.1",
     "velocity-animate": "^1.5.2",

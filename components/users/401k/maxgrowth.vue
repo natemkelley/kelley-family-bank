@@ -90,37 +90,34 @@ export default {
       let xTickArr = [];
       let contributions = ["contributions"];
       let match = ["match"];
+
       for (let index = 0; index < nPeriods; index++) {
         //X axis
         let addPeriod = period * (index + 1);
-        let addTimeFrame = moment().add(addPeriod, selectedPeriod);
-        let format = this.activePlan.matchPeriod == "year" ? "YYYY" : "ll";
-        xTickArr.push(addTimeFrame.format(format));
+        let test = moment().add(addPeriod, selectedPeriod);
+        let format = "ll";
+        xTickArr.push(test.format(format));
 
-        //compute totals
-        let matchTotal =
-          this.matchPerPeriod * (index + 1) * Boolean(this.matchStatus);
-        let contributionsTotal = this.matchPerPeriod * (index + 1);
-        let total = matchTotal + contributionsTotal;
+        let divider = this.matchStatus ? 2 : 1;
+        let num = Number(this.upToTheMatch) * Number((index + 1) / nPeriods);
+        let matchTotal = (num / divider) * Number(Boolean(this.matchStatus));
+        let contTotal = num / divider;
+        let total = matchTotal + contTotal;
 
-        //if total greater than max divide both by two
-        if (total > Number(this.maxGrowth) && this.maxGrowthStatus) {
-          let divider = this.matchStatus ? 2 : 1;
-          //match
+        if (total >= this.maxGrowth && this.maxGrowthStatus) {
           if (this.matchStatus) {
             match.push(this.maxGrowth / divider);
           }
-          //contributions
           contributions.push(this.maxGrowth / divider);
         } else {
-          //match
           if (this.matchStatus) {
-            match.push(this.matchPerPeriod * (index + 1));
+            match.push(num / divider);
           }
-          //contributions
-          contributions.push(this.matchPerPeriod * (index + 1));
+          contributions.push(num / divider);
         }
       }
+
+      //console.log(contributions, match);
 
       const initialOptions = {
         data: {
@@ -199,6 +196,14 @@ export default {
         ? moment(this.activePlan.withdrawDate)
         : moment(new Date()).add(10, period);
       return withdrawDate;
+    },
+    upToTheMatch() {
+      let multiplier = this.matchStatus ? 2 : 1;
+      return (
+        this.matchPerPeriod *
+        Math.max(1, this.numberOfPeriods) *
+        multiplier
+      ).toFixed(2);
     }
   },
   watch: {

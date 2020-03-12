@@ -194,7 +194,7 @@ p {
   border: 3px solid black;
 }
 
-.clickable{
+.clickable,.c3-shape,.c3-bar{
   cursor: url('../cursors/cursor-pointer.png'), auto;
 }
 

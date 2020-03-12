@@ -141,13 +141,16 @@ export default {
         let format = "ll";
         xTickArr.push(test.format(format));
 
+
+        let divider = this.matchStatus?2:1
+        let num = Number(this.upToTheMatch) * Number((index+1)/nPeriods);
         //match
         if (this.matchStatus) {
-          match.push(this.matchPerPeriod * (index + 1));
+          match.push(num/divider);
         }
 
         //contributions
-        contributions.push(this.matchPerPeriod * (index + 1));
+        contributions.push(num/divider);
       }
 
       const initialOptions = {
