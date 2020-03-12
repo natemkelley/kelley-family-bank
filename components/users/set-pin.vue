@@ -10,7 +10,7 @@
       <div class="hidden-cont">
         <input
           type="number"
-          class="hidden"
+          class="hidden clickable"
           v-model="passcode"
           @keyup="numberPunched"
           @click="clearInput"

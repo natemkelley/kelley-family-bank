@@ -75,7 +75,6 @@
 import Vue from "vue";
 import VueC3 from "vue-c3";
 import "@/assets/css/c3.min.css";
-import d3 from "d3";
 import moment, { max } from "moment";
 
 export default {
@@ -111,7 +110,6 @@ export default {
 
     this.matchStatus = this.activePlan.matchStatus || this.matchStatus;
     this.selectedPeriod = this.activePlan.matchPeriod || this.selectedPeriod;
-
     this.matchPerPeriod = this.activePlan.matchPerPeriod || this.matchPerPeriod;
   },
   methods: {
@@ -140,8 +138,8 @@ export default {
         //X axis
         let addPeriod = period * (index + 1);
         let test = moment().add(addPeriod, selectedPeriod);
-        let format = "l";
-        xTickArr.push(test.format("ll"));
+        let format = "ll";
+        xTickArr.push(test.format(format));
 
         //match
         if (this.matchStatus) {

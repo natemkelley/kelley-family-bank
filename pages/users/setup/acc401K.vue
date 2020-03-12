@@ -23,7 +23,7 @@
     </div>
 
     <div class="add-401k-cont row">
-      <div class="add401k shadow5" v-for="(plan, n) in plans" :key="n">
+      <div class="add401k clickable shadow5" :class="{selected:(plan.uuid == activePlan.uuid)}" v-for="(plan, n) in plans" :key="n">
         <div class="overflow-hidden">
           <p class="title">{{ plan.accountName || "No Name" }}</p>
           <p class="apr" v-show="plan.APR">{{ plan.APR + "% APR" }}</p>
@@ -63,7 +63,7 @@
           </transition>
 
           <div class="continue-btn" @click="setActiveSetting(null)">
-            <p class="rock-on">
+            <p class="clickable">
               continue<img
                 class=" rock-on right shadow3"
                 src="@/assets/images/continue.svg"
@@ -131,6 +131,7 @@ export default {
         matchPeriod: null,
         matchPerPeriod:null,
         maxGrowth: null,
+        maxGrowthStatus:false,
         APR: null,
         uuid: uuid
       };
@@ -138,6 +139,7 @@ export default {
       this.activePlan = template;
     },
     removePlan(ctx) {
+      console.log(ctx)
       this.plans.forEach((element, n) => {
         if (element.uuid == ctx.uuid) {
           this.plans.splice(n, 1);
@@ -268,6 +270,7 @@ export default {
     border-radius: 50%;
     border: 4px solid black;
     background-color: white;
+    z-index: 99;
     img {
       width: 50%;
       margin-top: 25%;
@@ -335,6 +338,11 @@ export default {
     margin-left: 7.5px;
   }
 }
+    .selected{
+      background: rgb(147, 255, 161)!important;
+}
+
+
 
 @media only screen and (max-width: 600px) {
   .names-container {

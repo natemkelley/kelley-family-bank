@@ -5,6 +5,7 @@
       <a
         v-for="(child, n) in childProfiles"
         :key="n"
+        class="clickable"
         :class="{ active: activeChild == n }"
         @click="nextChild(n)"
         >{{ (n + 1) | ordinal }} Child</a

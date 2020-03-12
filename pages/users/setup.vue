@@ -11,10 +11,10 @@
           class="previous-btn bigger-sm"
         >
           <img
-            class="rock-on left shadow3"
+            class="clickable left shadow3"
             src="@/assets/images/previous.svg"
           />
-          <p class="rock-on">previous</p>
+          <p class="clickable">previous</p>
         </NuxtLink>
         <NuxtLink
           v-if="!hideContinue"
