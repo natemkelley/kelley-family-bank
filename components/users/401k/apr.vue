@@ -5,11 +5,19 @@
     </div>
     <div class="match-container">
       <h1 class="text-center">What will the APR be?</h1>
-
       <div class="row number-cont d-flex justify-content-center">
         <div class="input-cont">
-          <input type="number" v-model="apr" placeholder="0%" step="0.1" />
+          <input type="number" v-model="apr" placeholder="4%" step="0.1" />
         </div>
+      </div>
+      <div class="row info">
+        <p>{{ matchStatusText }}</p>
+        <p>
+          This will earn ${{ totalInterestComputed }} in interest and ${{
+            totalMatchComputed
+          }}
+          of matched contributions
+        </p>
       </div>
     </div>
   </div>
@@ -35,20 +43,20 @@ export default {
       matchPerPeriod: 10,
       maxGrowth: 500,
       apr: 4,
+      datNum: 4,
+      maxedOutMatch:0,
       selectedPeriod: "week",
       periods: ["day", "week", "month", "year", "quarter"]
     };
   },
-
   mounted() {
-    console.log(this.activePlan);
     this.matchStatus = this.activePlan.matchStatus || this.matchStatus;
     this.selectedPeriod = this.activePlan.matchPeriod || this.selectedPeriod;
     this.matchPerPeriod = this.activePlan.matchPerPeriod || this.matchPerPeriod;
     this.maxGrowthStatus =
       this.activePlan.maxGrowthStatus || this.maxGrowthStatus;
     this.maxGrowth = this.activePlan.maxGrowth || this.maxGrowth;
-    this.apr = this.activePlan.apr || this.apr;
+    this.apr = this.activePlan.apr;
 
     this.computeChart(true);
     this.computeInterest();
@@ -102,28 +110,25 @@ export default {
           timeDifferenceInMonths
         );
 
-        let total = matchTotal + contTotal;
+        let total = matchTotal + contTotal + interestTotal;
 
-        if (this.matchStatus) {
-          match.push(amountAtPeriod / divider);
-        }
-        contributions.push(amountAtPeriod / divider);
-        interest.push(interestTotal);
-
-        /*if (total >= this.maxGrowth && this.maxGrowthStatus) {
+        if (total >= Number(this.maxGrowth) && this.maxGrowthStatus) {
+          let datint = interest[interest.length - 1];
+          let leftover = Number(this.maxGrowth) - datint;
+          interest.push(datint);
           if (this.matchStatus) {
-            match.push(this.maxGrowth / divider);
+            match.push(leftover / divider);
+            this.maxedOutMatch = (leftover / divider);
           }
-          contributions.push(this.maxGrowth / divider);
+          contributions.push(leftover / divider);
         } else {
           if (this.matchStatus) {
-            match.push(num / divider);
+            match.push(amountAtPeriod / divider);
           }
-          contributions.push(num / divider);
-        }*/
+          contributions.push(amountAtPeriod / divider);
+          interest.push(interestTotal);
+        }
       }
-
-      //console.log(contributions, match);
 
       const initialOptions = {
         data: {
@@ -182,13 +187,17 @@ export default {
         this.$emit("incomingData", template);
       }
     },
-    computeInterest(presentValue, pmt, nper, paymentFrequency) {
+    computeInterest(presentValue, pmt, nper, apr, paymentFrequency) {
+      if (this.apr == 0) {
+        return 0;
+      }
+
       let params = {
         pv: -presentValue,
         pmt: -pmt,
         nper: nper,
-        rate: this.apr,
-        pf: this.paymentFrequencyCalculated,
+        rate: this.apr || apr,
+        pf: paymentFrequency || this.paymentFrequencyCalculated,
         cf: 12
       };
 
@@ -197,8 +206,7 @@ export default {
       let totalInterest = Number(
         (fv - presentValue - totalPayments).toFixed(2)
       );
-      //console.log(params)
-      //console.log("nper", nper, "fv", fv,'totalpay',totalPayments);
+
       return Number(totalInterest);
     }
   },
@@ -242,6 +250,81 @@ export default {
         Math.max(1, this.numberOfPeriods) *
         multiplier
       ).toFixed(2);
+    },
+    matchStatusText() {
+      var text = "This assumes ";
+
+      if (this.matchStatus) {
+        text =
+          text +
+          "a matched contribution of $" +
+          this.matchPerPeriod +
+          " every " +
+          this.selectedPeriod;
+      } else {
+        text =
+          text +
+          "a contribution of $" +
+          this.matchPerPeriod +
+          " every " +
+          this.selectedPeriod;
+      }
+
+      text = text + ", an interest rate of " + this.apr + "%";
+
+      if (this.maxGrowthStatus) {
+        text = text + ", a max growth of $" + this.maxGrowth;
+      }
+
+      if (this.withdrawDate) {
+        text =
+          text +
+          ", and a withdrawal date of " +
+          moment(this.withdrawDate).format("LL") +
+          ".";
+      } else {
+        text =
+          text +
+          ", and goes until " +
+          moment(new Date())
+            .add(10, this.selectedPeriod)
+            .format("LL") +
+          ".";
+      }
+
+      return text;
+    },
+    totalInterestComputed() {
+      let timeDifferenceInMonths = this.calculatedDate.diff(
+        moment(),
+        this.selectedPeriod,
+        true
+      );
+
+      let payment =
+        Number(this.matchPerPeriod) +
+        Number(this.matchPerPeriod * Boolean(this.matchStatus));
+
+      let interestTotal = this.computeInterest(
+        0,
+        payment,
+        timeDifferenceInMonths
+      );
+
+      return interestTotal;
+    },
+    totalMatchComputed() {
+      let multiplier = this.matchStatus ? 2 : 1;
+      let money = (
+        this.matchPerPeriod *
+        Math.max(1, this.numberOfPeriods) *
+        multiplier
+      ).toFixed(2);
+      if(money>this.maxGrowth){
+        return this.maxedOutMatch
+      }
+
+      return money / 2;
     }
   },
   watch: {
@@ -266,6 +349,7 @@ export default {
   position: relative;
   h1 {
     font-size: 24px;
+    margin-top: 5px;
   }
   .yesno-btn {
     border: 3.3px solid black;
@@ -295,6 +379,12 @@ export default {
 
   .number-cont {
     margin-top: -4px;
+  }
+}
+
+.info {
+  p {
+    margin-top: 5px;
   }
 }
 </style>

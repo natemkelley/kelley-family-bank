@@ -131,7 +131,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  max-width: 850px;
+  max-width: 875px;
 }
 .setup-cont {
   max-width: 850px;

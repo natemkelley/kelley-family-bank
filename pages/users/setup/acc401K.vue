@@ -23,11 +23,21 @@
     </div>
 
     <div class="add-401k-cont row">
-      <div class="add401k clickable shadow5" :class="{selected:(plan.uuid == activePlan.uuid)}" v-for="(plan, n) in plans" :key="n">
+      <div
+        class="add401k clickable shadow5"
+        :class="{ selected: plan.uuid == activePlan.uuid }"
+        v-for="(plan, n) in plans"
+        :key="n"
+        @click="changeActivePlan(plan.uuid)"
+      >
         <div class="overflow-hidden">
-          <p class="title">{{ plan.accountName || "No Name" }}</p>
-          <p class="apr" v-if="plan.APR">{{ plan.APR + "% APR" }}</p>
-          <p class="year" v-if="plan.withdrawDate">{{ plan.withdrawDate | formatDate }}</p>
+          <p class="title">
+            <strong>{{ plan.accountName || "No Name" }}</strong>
+          </p>
+          <p class="apr" v-show="plan.apr > 0">{{ plan.apr + "% APR" }}</p>
+          <p class="year" v-show="plan.withdrawDate">
+            {{ plan.withdrawDate | formatDate }}
+          </p>
         </div>
         <div class="delete clickable bigger-sm" @click="removePlan(plan)">
           <img src="@/assets/images/minus.png" />
@@ -78,7 +88,7 @@
 
 <script>
 import { v4 as uuidv4 } from "uuid";
-import moment from 'moment';
+import moment from "moment";
 
 export default {
   data() {
@@ -95,15 +105,15 @@ export default {
         "APR"
       ],
       activeSetting: null,
-      complete:false
+      complete: false
     };
   },
   mounted() {
     this.setActiveSetting(this.settingsList[0]);
   },
-  filters:{
-    formatDate(date){
-    return moment(date).format('MMM YYYY');
+  filters: {
+    formatDate(date) {
+      return moment(date).format("MMM YYYY");
     }
   },
   methods: {
@@ -135,17 +145,17 @@ export default {
         withdrawDate: null,
         matchStatus: false,
         matchPeriod: null,
-        matchPerPeriod:null,
+        matchPerPeriod: null,
         maxGrowth: null,
-        maxGrowthStatus:false,
-        apr: null,
+        maxGrowthStatus: false,
+        apr: 0,
         uuid: uuid
       };
       this.plans.push(template);
       this.activePlan = template;
     },
     removePlan(ctx) {
-      console.log(ctx)
+      console.log(ctx);
       this.plans.forEach((element, n) => {
         if (element.uuid == ctx.uuid) {
           this.plans.splice(n, 1);
@@ -158,10 +168,10 @@ export default {
     setActiveSetting(name) {
       let index = this.settingsList.indexOf(this.activeSetting);
 
-      if(index+1 >= this.settingsList.length){
+      if (index + 1 >= this.settingsList.length) {
         this.complete = true;
-        this.activeSetting = 'complete';
-        return
+        this.activeSetting = "complete";
+        return;
       }
 
       if (!name) {
@@ -172,6 +182,14 @@ export default {
     },
     importComponent(path) {
       return () => import(`@/components/users/401k/${this.componentName}.vue`);
+    },
+    changeActivePlan(uuid) {
+      alert(uuid);
+      this.plans.forEach(element => {
+        if(element.uuid === uuid){
+          this.activePlan = element
+        }
+      });
     }
   },
   computed: {
@@ -257,6 +275,7 @@ export default {
       font-weight: bold;
     }
     p {
+      display: inline-block;
       margin-top: 0px;
       margin-top: 0px;
       margin-bottom: 2px;
@@ -318,19 +337,21 @@ export default {
 }
 
 .settings {
-    padding: 1px 0px 5px 20px;
-    position:relative;
-    }
+  padding: 1px 0px 5px 20px;
+  padding-bottom: 25px;
+  position: relative;
+}
 
 .continue-btn {
   opacity: 1;
-  right: 7.5px;text-align: right;
-    margin-right: 42px;
-    opacity: 1;
-    transition: 0.25s all ease;
-        position: absolute;
-    bottom: 0;
-    margin-bottom: -21.5px;
+  right: 7.5px;
+  text-align: right;
+  margin-right: 42px;
+  opacity: 1;
+  transition: 0.25s all ease;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: -21.5px;
   p {
     color: black;
     font-size: 24px;
@@ -344,11 +365,9 @@ export default {
     margin-left: 7.5px;
   }
 }
-    .selected{
-      background: rgb(147, 255, 161)!important;
+.selected {
+  background: rgb(147, 255, 161) !important;
 }
-
-
 
 @media only screen and (max-width: 600px) {
   .names-container {
@@ -361,8 +380,8 @@ export default {
       height: 100%;
     }
   }
-  .settings-list{
-    display:none;
+  .settings-list {
+    display: none;
   }
 }
 </style>
