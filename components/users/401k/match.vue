@@ -214,7 +214,7 @@ export default {
   computed: {
     upToTheMatch() {
       let multiplier = this.matchStatus ? 2 : 1;
-      return this.numberWithCommas(
+      return (
         (
           this.matchPerPeriod *
           Math.max(1, this.numberOfPeriods) *

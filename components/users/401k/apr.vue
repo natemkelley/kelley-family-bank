@@ -77,50 +77,53 @@ export default {
         //X axis
         let addPeriod = period * (index + 1);
         let addTimeFrame = moment().add(addPeriod, selectedPeriod);
-        let format = this.activePlan.matchPeriod == "year" ? "YYYY" : "ll";
+        let format = "ll";
         xTickArr.push(addTimeFrame.format(format));
 
-        //compute match totals
+        let divider = this.matchStatus ? 2 : 1;
+        let amountAtPeriod =
+          Number(this.upToTheMatch) * Number((index + 1) / nPeriods);
         let matchTotal =
-          this.matchPerPeriod * (index + 1) * Boolean(this.matchStatus);
+          (amountAtPeriod / divider) * Number(Boolean(this.matchStatus));
+        let contTotal = amountAtPeriod / divider;
 
-        //compute contribution totals
-        let contributionsTotal = this.matchPerPeriod * (index + 1);
-
-        //compute interest totals
-        let timeDifferenceInMonths = addTimeFrame.diff(now, "months", true);
-        let presentValue = 0;
+        //compute interest
+        let timeDifferenceInMonths = addTimeFrame.diff(
+          now,
+          this.selectedPeriod,
+          true
+        );
         let payment =
           Number(this.matchPerPeriod) +
           Number(this.matchPerPeriod * Boolean(this.matchStatus));
-        let paymentPerMonth = payment / 12;
-        let paymentFrequency = this.paymentFrequencyCalculated;
-        let nper = timeDifferenceInMonths;
-        let rate = this.apr;
         let interestTotal = this.computeInterest(
-          presentValue,
+          0,
           payment,
-          nper,
-          rate,
-          paymentFrequency
+          timeDifferenceInMonths
         );
 
-        //total
-        let total = matchTotal + contributionsTotal + interest;
+        let total = matchTotal + contTotal;
 
-        //if total greater than max divide both by two
-        let divider = this.matchStatus ? 2 : 1;
-
-        //match
         if (this.matchStatus) {
-          match.push(matchTotal);
+          match.push(amountAtPeriod / divider);
         }
-        //contributions
-        contributions.push(contributionsTotal);
+        contributions.push(amountAtPeriod / divider);
         interest.push(interestTotal);
+
+        /*if (total >= this.maxGrowth && this.maxGrowthStatus) {
+          if (this.matchStatus) {
+            match.push(this.maxGrowth / divider);
+          }
+          contributions.push(this.maxGrowth / divider);
+        } else {
+          if (this.matchStatus) {
+            match.push(num / divider);
+          }
+          contributions.push(num / divider);
+        }*/
       }
 
-      console.log(interest, contributions);
+      //console.log(contributions, match);
 
       const initialOptions = {
         data: {
@@ -179,21 +182,23 @@ export default {
         this.$emit("incomingData", template);
       }
     },
-    computeInterest(presentValue, pmt, nper, rate, paymentFrequency) {
+    computeInterest(presentValue, pmt, nper, paymentFrequency) {
       let params = {
         pv: -presentValue,
         pmt: -pmt,
         nper: nper,
-        rate: rate,
-        pf: paymentFrequency
+        rate: this.apr,
+        pf: this.paymentFrequencyCalculated,
+        cf: 12
       };
 
       const fv = tmv.calcFV(params);
       let totalPayments = Number(pmt) * Number(nper);
-      let totalInterest = (fv - presentValue - totalPayments).toFixed(2);
-
-      console.log(params);
-      console.log("nper", nper, "total int", totalInterest);
+      let totalInterest = Number(
+        (fv - presentValue - totalPayments).toFixed(2)
+      );
+      //console.log(params)
+      //console.log("nper", nper, "fv", fv,'totalpay',totalPayments);
       return Number(totalInterest);
     }
   },
@@ -229,6 +234,14 @@ export default {
         default:
           return 12;
       }
+    },
+    upToTheMatch() {
+      let multiplier = this.matchStatus ? 2 : 1;
+      return (
+        this.matchPerPeriod *
+        Math.max(1, this.numberOfPeriods) *
+        multiplier
+      ).toFixed(2);
     }
   },
   watch: {
