@@ -127,9 +127,9 @@ export default {
         children: [],
         purpose: null,
         withdrawDate: null,
-        matchStatus: null,
-        maxPeriod: null,
-        maxPerPeriod:null,
+        matchStatus: false,
+        matchPeriod: null,
+        matchPerPeriod:null,
         maxGrowth: null,
         APR: null,
         uuid: uuid

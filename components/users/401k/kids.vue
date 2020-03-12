@@ -40,8 +40,9 @@ export default {
           this.kidsList.push(doc.data());
         });
         this.loading = false;
-        this.returnData = this.activePlan.kids || [];
       });
+
+    this.returnData = this.activePlan.children || [];
   },
   data() {
     return {
@@ -58,7 +59,7 @@ export default {
         this.returnData.push(uuid);
       }
 
-      let setting = "kids";
+      let setting = "children";
       let data = this.returnData;
       let template = {
         setting,

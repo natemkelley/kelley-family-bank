@@ -26,7 +26,7 @@
             The max amount I will match is
             <span
               >$<input
-                v-model="match"
+                v-model="matchPerPeriod"
                 placeholder="10"
                 class="matchNum"
                 type="number"
@@ -45,7 +45,7 @@
         <div class="col-12">
           <p class="info" v-show="matchStatus">
             If your child contributes up to the match
-            <strong>${{ match }}</strong> every
+            <strong>${{ matchPerPeriod }}</strong> every
             <strong>{{ selectedPeriod }}</strong> they will save
             <strong>${{ upToTheMatch }}</strong> over
             <strong
@@ -56,7 +56,7 @@
           </p>
           <p class="info" v-show="!matchStatus">
             If your child contributes
-            <strong>${{ match }}</strong> every
+            <strong>${{ matchPerPeriod }}</strong> every
             <strong>{{ selectedPeriod }}</strong> they will save
             <strong>${{ upToTheMatch }}</strong> over
             <strong
@@ -86,8 +86,8 @@ export default {
   data() {
     return {
       handler: new Vue(),
-      matchStatus: true,
-      match: 10,
+      matchStatus: false,
+      matchPerPeriod: 10,
       selectedPeriod: "week",
       periods: ["day", "week", "month", "year", "quarter"]
     };
@@ -102,10 +102,17 @@ export default {
     }
   },
   mounted() {
+    console.log(this.activePlan);
+
     this.computeChart(true);
     this.$el.querySelector("select").selectedIndex = this.periods.indexOf(
-      this.selectedPeriod
+      this.activePlan.matchPeriod || this.selectedPeriod
     );
+
+    this.matchStatus = this.activePlan.matchStatus || this.matchStatus;
+    this.selectedPeriod = this.activePlan.matchPeriod || this.selectedPeriod;
+
+    this.matchPerPeriod = this.activePlan.matchPerPeriod || this.matchPerPeriod;
   },
   methods: {
     toggleData() {
@@ -138,11 +145,11 @@ export default {
 
         //match
         if (this.matchStatus) {
-          match.push(this.match * (index + 1));
+          match.push(this.matchPerPeriod * (index + 1));
         }
 
         //contributions
-        contributions.push(this.match * (index + 1));
+        contributions.push(this.matchPerPeriod * (index + 1));
       }
 
       const initialOptions = {
@@ -191,13 +198,27 @@ export default {
       this.handler.$emit("dispatch", chart => {
         chart.load(initialOptions.data);
       });
+    },
+    inputChanged(key, data) {
+      if (key) {
+        let setting = key;
+        let template = {
+          setting,
+          data
+        };
+        this.$emit("incomingData", template);
+      }
     }
   },
   computed: {
     upToTheMatch() {
-      let multiplier = this.matchStatus ? 2:1
+      let multiplier = this.matchStatus ? 2 : 1;
       return this.numberWithCommas(
-        (this.match * Math.max(1, this.numberOfPeriods) * multiplier).toFixed(0)
+        (
+          this.matchPerPeriod *
+          Math.max(1, this.numberOfPeriods) *
+          multiplier
+        ).toFixed(0)
       );
     },
     numberOfPeriods() {
@@ -221,14 +242,19 @@ export default {
     }
   },
   watch: {
-    match() {
+    matchPerPeriod() {
       this.computeChart();
+      this.inputChanged("matchPerPeriod", this.matchPerPeriod);
     },
     selectedPeriod() {
       this.computeChart(true);
+      this.inputChanged("matchPeriod", this.selectedPeriod);
     },
     matchStatus() {
       this.computeChart(true);
+      this.inputChanged("matchStatus", this.matchStatus);
+      this.inputChanged("matchPeriod", this.selectedPeriod);
+      this.inputChanged("matchPerPeriod", this.matchPerPeriod);
     }
   }
 };
