@@ -33,6 +33,11 @@ export default {
       };
       this.$emit("incomingData", template);
     }
+  },
+  watch: {
+    activePlan() {
+      this.data = this.activePlan.purpose;
+    }
   }
 };
 </script>

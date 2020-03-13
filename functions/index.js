@@ -42,6 +42,7 @@ exports.createUserDB = functions.auth.user().onCreate(async (user) => {
     profilePic:null,
     type:'parent'
   });
+  
 });
 
 exports.helloWorld = functions.https.onRequest((request, response) => {

@@ -61,7 +61,7 @@ export default {
           inputCont[n].classList.add("selected");
         });
       }
-      console.log(realDigits);
+      //console.log(realDigits);
     },
     clearInput() {
       this.passcode = '';

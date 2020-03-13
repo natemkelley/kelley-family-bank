@@ -35,9 +35,7 @@
             <strong>{{ plan.accountName || "No Name" }}</strong>
           </p>
           <p class="apr" v-show="plan.apr > 0">{{ plan.apr + "% APR" }}</p>
-          <p class="year" v-show="plan.withdrawDate">
-            {{ plan.withdrawDate | formatDate }}
-          </p>
+          <p class="year" v-show="plan.withdrawDate">{{ plan.withdrawDate | formatDate }}</p>
         </div>
         <div class="delete clickable bigger-sm" @click="removePlan(plan)">
           <img src="@/assets/images/minus.png" />
@@ -109,10 +107,28 @@ export default {
     };
   },
   mounted() {
+    let uid = this.$store.state.account.uid;
+    this.$fireStore
+      .collection("users")
+      .doc(uid)
+      .collection("accounts")
+      .where("type", "==", "401k")
+      .get()
+      .then(docs => {
+        docs.forEach(element => {
+          this.activePlan = element.data();
+          this.plans.push(element.data());
+          //this.plans.push(element.data());
+        });
+      });
+
     this.setActiveSetting(this.settingsList[0]);
   },
   filters: {
     formatDate(date) {
+      if (!date) {
+        return false;
+      }
       return moment(date).format("MMM YYYY");
     }
   },
@@ -149,13 +165,13 @@ export default {
         maxGrowth: null,
         maxGrowthStatus: false,
         apr: 0,
-        uuid: uuid
+        uuid: uuid,
+        type: "401k"
       };
       this.plans.push(template);
       this.activePlan = template;
     },
     removePlan(ctx) {
-      console.log(ctx);
       this.plans.forEach((element, n) => {
         if (element.uuid == ctx.uuid) {
           this.plans.splice(n, 1);
@@ -184,10 +200,9 @@ export default {
       return () => import(`@/components/users/401k/${this.componentName}.vue`);
     },
     changeActivePlan(uuid) {
-      alert(uuid);
       this.plans.forEach(element => {
-        if(element.uuid === uuid){
-          this.activePlan = element
+        if (element.uuid === uuid) {
+          this.activePlan = element;
         }
       });
     }
@@ -203,6 +218,30 @@ export default {
       }
       return name;
     }
+  },
+  async beforeDestroy() {
+    let uid = this.$store.state.account.uid;
+    let db = this.$fireStore;
+    let batch = db.batch();
+
+    this.plans.forEach(element => {
+      //element.withdrawDate = new Date(element.withdrawDate)
+      if(element.withdrawDate){
+        element.withdrawDate = String(new Date(element.withdrawDate))
+      }
+
+      console.log(element.withdrawDate);
+      //element.withdrawDate = null;
+      let ref = db
+        .collection("users")
+        .doc(uid)
+        .collection("accounts")
+        .doc(element.uuid);
+      batch.set(ref, element);
+    });
+    await batch.commit().then(() => {
+      console.log("saved some account", this.plans);
+    });
   }
 };
 </script>

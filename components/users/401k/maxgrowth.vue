@@ -215,6 +215,17 @@ export default {
     maxGrowth() {
       this.computeChart();
       this.inputChanged("maxGrowth", this.maxGrowth);
+    },
+    activePlan() {
+      this.matchStatus = this.activePlan.matchStatus || false;
+      this.selectedPeriod = this.activePlan.matchPeriod || 'week';
+      this.matchPerPeriod =
+        this.activePlan.matchPerPeriod || 10;
+      this.maxGrowthStatus =
+        this.activePlan.maxGrowthStatus || false;
+      this.maxGrowth = this.activePlan.maxGrowth || this.maxGrowth;
+
+      this.computeChart(true);
     }
   }
 };

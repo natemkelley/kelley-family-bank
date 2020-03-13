@@ -16,7 +16,7 @@
           This will earn ${{ totalInterestComputed }} in interest and ${{
             totalMatchComputed
           }}
-          of matched contributions
+          of matched contributions.
         </p>
       </div>
     </div>
@@ -44,7 +44,7 @@ export default {
       maxGrowth: 500,
       apr: 4,
       datNum: 4,
-      maxedOutMatch:0,
+      maxedOutMatch: 0,
       selectedPeriod: "week",
       periods: ["day", "week", "month", "year", "quarter"]
     };
@@ -59,7 +59,6 @@ export default {
     this.apr = this.activePlan.apr;
 
     this.computeChart(true);
-    this.computeInterest();
   },
   methods: {
     async computeChart(mounting) {
@@ -118,7 +117,7 @@ export default {
           interest.push(datint);
           if (this.matchStatus) {
             match.push(leftover / divider);
-            this.maxedOutMatch = (leftover / divider);
+            this.maxedOutMatch = leftover / divider;
           }
           contributions.push(leftover / divider);
         } else {
@@ -314,14 +313,18 @@ export default {
       return interestTotal;
     },
     totalMatchComputed() {
+      if (!this.matchStatus) {
+        return 0;
+      }
+
       let multiplier = this.matchStatus ? 2 : 1;
       let money = (
         this.matchPerPeriod *
         Math.max(1, this.numberOfPeriods) *
         multiplier
       ).toFixed(2);
-      if(money>this.maxGrowth){
-        return this.maxedOutMatch
+      if (money > this.maxGrowth) {
+        return this.maxedOutMatch;
       }
 
       return money / 2;
@@ -331,6 +334,16 @@ export default {
     apr() {
       this.computeChart();
       this.inputChanged("apr", this.apr);
+    },
+    activePlan() {
+      this.matchStatus = this.activePlan.matchStatus || false;
+      this.selectedPeriod = this.activePlan.matchPeriod || "week";
+      this.matchPerPeriod = this.activePlan.matchPerPeriod || 10;
+      this.maxGrowthStatus = this.activePlan.maxGrowthStatus || false;
+      this.maxGrowth = this.activePlan.maxGrowth || this.maxGrowth;
+      this.apr = this.activePlan.apr || 0;
+
+      this.computeChart(true);
     }
   }
 };

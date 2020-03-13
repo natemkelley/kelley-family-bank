@@ -75,6 +75,11 @@ export default {
       }
       return false;
     }
+  },
+  watch: {
+    activePlan() {
+      this.returnData = this.activePlan.children || [];
+    }
   }
 };
 </script>

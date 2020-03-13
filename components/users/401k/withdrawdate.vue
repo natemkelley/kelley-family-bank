@@ -90,6 +90,14 @@ export default {
       };
       this.$emit("incomingData", template);
     }
+  },
+  watch: {
+    activePlan() {
+      this.data = this.activePlan.withdrawDate ? true : false;
+      this.date = this.activePlan.withdrawDate
+        ? this.activePlan.withdrawDate
+        : null;
+    }
   }
 };
 </script>

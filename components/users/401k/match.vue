@@ -101,8 +101,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.activePlan);
-
     this.computeChart(true);
     this.$el.querySelector("select").selectedIndex = this.periods.indexOf(
       this.activePlan.matchPeriod || this.selectedPeriod
@@ -141,16 +139,15 @@ export default {
         let format = "ll";
         xTickArr.push(test.format(format));
 
-
-        let divider = this.matchStatus?2:1
-        let num = Number(this.upToTheMatch) * Number((index+1)/nPeriods);
+        let divider = this.matchStatus ? 2 : 1;
+        let num = Number(this.upToTheMatch) * Number((index + 1) / nPeriods);
         //match
         if (this.matchStatus) {
-          match.push(num/divider);
+          match.push(num / divider);
         }
 
         //contributions
-        contributions.push(num/divider);
+        contributions.push(num / divider);
       }
 
       const initialOptions = {
@@ -215,12 +212,10 @@ export default {
     upToTheMatch() {
       let multiplier = this.matchStatus ? 2 : 1;
       return (
-        (
-          this.matchPerPeriod *
-          Math.max(1, this.numberOfPeriods) *
-          multiplier
-        ).toFixed(0)
-      );
+        this.matchPerPeriod *
+        Math.max(1, this.numberOfPeriods) *
+        multiplier
+      ).toFixed(0);
     },
     numberOfPeriods() {
       let period = this.selectedPeriod + "s";
@@ -256,6 +251,18 @@ export default {
       this.inputChanged("matchStatus", this.matchStatus);
       this.inputChanged("matchPeriod", this.selectedPeriod);
       this.inputChanged("matchPerPeriod", this.matchPerPeriod);
+    },
+    activePlan() {
+      console.log(this.activePlan);
+
+      this.computeChart(true);
+      this.$el.querySelector("select").selectedIndex = this.periods.indexOf(
+        this.activePlan.matchPeriod || this.selectedPeriod
+      );
+
+      this.matchStatus = this.activePlan.matchStatus || false;
+      this.selectedPeriod = this.activePlan.matchPeriod || "week";
+      this.matchPerPeriod = this.activePlan.matchPerPeriod || 10;
     }
   }
 };

@@ -130,7 +130,7 @@ export default {
   },
   methods: {
     setActiveChild(n) {
-      console.log(this.childProfiles, n);
+      //console.log(this.childProfiles, n);
       let profile = this.childProfiles[n];
       this.name = profile.firstName;
       this.birthMonth = profile.birthMonth;
