@@ -19,11 +19,11 @@
         <NuxtLink
           v-if="!hideContinue"
           :to="continueBtn"
-          class="continue-btn rock-on bigger-sm"
+          class="clickable continue-btn bigger-sm"
         >
-          <p class="rock-on">
+          <p class="clickable">
             continue<img
-              class=" rock-on right shadow3"
+              class=" clickable right shadow3"
               src="@/assets/images/continue.svg"
             />
           </p>

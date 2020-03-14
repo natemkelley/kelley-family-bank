@@ -27,7 +27,7 @@
 import Vue from "vue";
 import VueC3 from "vue-c3";
 import "@/assets/css/c3.min.css";
-import moment, { max } from "moment";
+import moment from "moment";
 import tmv from "tvm-calculator";
 
 export default {
@@ -310,7 +310,7 @@ export default {
         timeDifferenceInMonths
       );
 
-      return interestTotal;
+      return interestTotal.toFixed(2);
     },
     totalMatchComputed() {
       if (!this.matchStatus) {
@@ -324,10 +324,10 @@ export default {
         multiplier
       ).toFixed(2);
       if (money > this.maxGrowth) {
-        return this.maxedOutMatch;
+        return this.maxedOutMatch.toFixed(2);
       }
 
-      return money / 2;
+      return (money / 2).toFixed(2);
     }
   },
   watch: {
