@@ -52,6 +52,11 @@
               class="pins"
             />
           </div>
+          <div class="input-cont pin-info">
+            <p class="">
+              Your child will use this pin to access their account.
+            </p>
+          </div>
         </div>
       </div>
       <div class="row d-flex justify-content-end">
@@ -108,8 +113,8 @@ export default {
       nextKidCont: false,
       birthMonth: "Birth Month",
       name: null,
-      src: null,
-      completed:false
+      src: "avatars_1.svg",
+      completed: false
     };
   },
   mounted() {
@@ -125,6 +130,7 @@ export default {
         docs.forEach(element => {
           this.childProfiles.push(element.data());
         });
+        console.log(this.childProfiles);
         this.setActiveChild(this.activeChild);
       });
   },
@@ -137,7 +143,7 @@ export default {
       this.$el.querySelector("select").selectedIndex = this.months.indexOf(
         profile.birthMonth || "Birth Month"
       );
-      this.src = profile.profilePic;
+      this.src = profile.profilePic || this.src;
       this.age = profile.age;
       this.activeChild = n;
 
@@ -190,7 +196,7 @@ export default {
       this.passcode = null;
       this.$el.querySelector("select").selectedIndex = 0;
       this.birthMonth = "Birth Month";
-      this.src = null;
+      this.src = "avatars_1.svg";
       this.age = null;
     },
     async nextChild(n) {
@@ -277,13 +283,13 @@ export default {
 <style lang="scss" scoped>
 .names-container {
   padding: 0px;
-.completed{
- background:#43ED93!important;
- color:black;
- h1{
-   padding-bottom: 45px!important;
- }
-}
+  .completed {
+    background: #43ed93 !important;
+    color: black;
+    h1 {
+      padding-bottom: 45px !important;
+    }
+  }
 
   .children-ordinal {
     overflow: auto;
@@ -361,7 +367,11 @@ export default {
   }
 }
 
-
+.pin-info{
+      margin-left: 21.5px;
+    color: gray;
+    margin-top: -15px;
+}
 
 @media only screen and (max-width: 600px) {
   .names-container .setup-cont {

@@ -1,8 +1,8 @@
 <template>
   <div class="row">
-    <div class="keys black" :class="{offsetLarge:!large}">
+    <div class="keys black" :class="{ offsetLarge: !large }">
       <div class="d-flex justify-content-center">
-                          <h4 v-if="!large">enter passcode</h4>
+        <h4 v-if="!large">enter passcode</h4>
         <div v-for="n in 4" :key="n + 'passcode'" class="input-pins shadow5">
           <input :value="passcodeArray[n - 1]" type="text" class="" />
         </div>
@@ -64,22 +64,28 @@ export default {
       //console.log(realDigits);
     },
     clearInput() {
-      this.passcode = '';
-      this.updateSelectedInput();
+      this.passcode = null;
+      var inputCont = this.$el.querySelectorAll(".input-pins");
+      var inputs = this.$el.querySelectorAll("input");
+
+      inputCont.forEach((element, n) => {
+        element.classList.remove("selected");
+      });
+      inputCont[0].classList.add("selected");
+
+      console.log(inputCont,inputs)
     }
   },
   computed: {
     passcodeArray() {
       var arr = [];
-      if (this.passcode || this.incomingPasscode) {
-        var s = this.passcode || this.incomingPasscode;
+      if (this.passcode) {
+        var s = this.passcode;
         for (var i = 0; i < s.length; i++) {
           arr.push(s.charAt(i));
         }
-        return arr;
-      } else {
-        return arr;
       }
+              return arr;
     }
   },
   watch: {
@@ -146,14 +152,14 @@ h4 {
 }
 .keys {
   position: relative;
-  h4{
+  h4 {
     position: absolute;
     top: -45px;
     margin-left: -45px;
   }
 }
-.offsetLarge{
-    margin-top: 41px;
+.offsetLarge {
+  margin-top: 41px;
 }
 .row {
   margin-right: 0;

@@ -4,8 +4,8 @@
     <div class="row">
       <div class="col-8">
         <p>
-          I want this account to stop growing when my child turns a certain age.
-          If you choose no, you can set a max growth amount under account max.
+          Do you want this account to stop growing on a certain date? This is mostly for time sensitive accounts such as summer camps or graduations.
+          If you choose no, you can cap how much this account can have in it under "max growth". These measures protect you from giving more than you actually have to your children.
         </p>
       </div>
       <div class="col-4 d-flex align-items-center">

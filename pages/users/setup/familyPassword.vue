@@ -8,7 +8,9 @@
         large="true"
       />
     </div>
-    <p class="text-center">You will use this to sign into your account.</p>
+    <div class="container info-cont">
+          <p class="text-center">You will use this to sign into your account. Later on, you will set pins for your children so they can sign into their accounts.</p>
+    </div>
   </div>
 </template>
 
@@ -103,6 +105,9 @@ export default {
 
   .input-cont {
     padding: 15px;
+  }
+  .info-cont{
+    max-width: 600px;
   }
 }
 </style>
